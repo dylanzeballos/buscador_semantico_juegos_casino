@@ -1,0 +1,54 @@
+extends layout
+
+block content
+  .row.g-4
+    // Sidebar - Categorías
+    .col-lg-3
+      .card
+        .card-header
+          i.fas.fa-layer-group.me-2
+          | CATEGORÍAS
+        .card-body.p-0
+          #classesList.list-group.list-group-flush
+            .text-center.py-4
+              .spinner-border.spinner-border-sm(role='status')
+                span.visually-hidden Cargando...
+              p.mt-2.mb-0.small Cargando categorías...
+
+    // Main Content - Resultados
+    .col-lg-9
+      .card
+        .card-header.d-flex.justify-content-between.align-items-center
+          div
+            i.fas.fa-th-list.me-2
+            | RESULTADOS
+          span#resultsCount.badge.bg-primary 0
+        .card-body
+          #resultsContainer
+            .alert.alert-info.mb-0(role='alert')
+              .d-flex.align-items-center
+                i.fas.fa-info-circle.fa-2x.me-3
+                div
+                  strong.d-block.mb-1 Bienvenido al Buscador Semántico de Casinos
+                  span Utiliza el buscador arriba o selecciona una categoría para explorar
+
+  // Modal para estadísticas
+  #statsModal.modal.fade(tabindex='-1')
+    .modal-dialog.modal-lg.modal-dialog-centered
+      .modal-content
+        .modal-header
+          h5.modal-title
+            i.fas.fa-chart-pie.me-2
+            | ESTADÍSTICAS DE LA ONTOLOGÍA
+          button.btn-close(type='button', data-bs-dismiss='modal')
+        .modal-body.p-4
+          #statsContent
+            .text-center.py-5
+              .spinner-border(role='status')
+                span.visually-hidden Cargando...
+              p.mt-3.mb-0 Cargando estadísticas...
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
+            i.fas.fa-times.me-2
+            | CERRAR
+

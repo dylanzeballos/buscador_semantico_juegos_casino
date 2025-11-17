@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:un2="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaRuletaNumero">
+    <rdfs:label xml:lang="es">Ruleta - Número único</rdfs:label>
+    <un2:deJuego>
+      <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ruleta"/>
+        <un2:Categoria>mesa</un2:Categoria>
+        <un2:Probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.47</un2:Probabilidad>
+        <un2:ReglasBasicas>Los jugadores apuestan a números o a colores</un2:ReglasBasicas>
+        <un2:categoria rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaMesa"/>
+        <un2:RTP rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9730</un2:RTP>
+        <un2:ventajaCasa rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.027</un2:ventajaCasa>
+        <un2:descripcion xml:lang="es">Ruleta europea (37 números, 0 único).</un2:descripcion>
+        <un2:tieneVariante rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RuletaEuropea"/>
+        <un2:edadMinima rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</un2:edadMinima>
+        <un2:requiere xml:lang="es">Documento de identidad</un2:requiere>
+      </owl:NamedIndividual>
+    </un2:deJuego>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0270</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G8">
+    <un2:asignadaA>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorCarlos"/>
+    </un2:asignadaA>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600</un2:Monto>
+  </un2:Ganancia>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ofrece">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#UbicacionCiudad">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ubicación">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+      </owl:DatatypeProperty>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ciudad"/>
+  </owl:DatatypeProperty>
+  <un2:Disenio rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#DisenioCasino1">
+    <un2:usaColor xml:lang="es">Rojo y dorado</un2:usaColor>
+    <un2:buscaEfecto xml:lang="es">Estimular energía y permanencia</un2:buscaEfecto>
+    <un2:aplicaEn>
+      <un2:CasinoFisico rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoCochabamba">
+        <un2:UbicacionCiudad rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Cochabamba"/>
+        <un2:reguladoPor rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionBO"/>
+        <un2:medidaSeguridad xml:lang="es">Vigilancia 24/7; KYC de ingreso</un2:medidaSeguridad>
+        <un2:transparenciaNivel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</un2:transparenciaNivel>
+        <un2:soporteMovil rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</un2:soporteMovil>
+        <un2:modeloNegocio rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RealMoney"/>
+        <un2:otorga rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaVIP"/>
+        <un2:utilizaEstrategia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaEventos"/>
+        <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro"/>
+        <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorAna"/>
+        <un2:tieneJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta"/>
+        <un2:tieneJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoBlackjack"/>
+      </un2:CasinoFisico>
+    </un2:aplicaEn>
+  </un2:Disenio>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Cashback">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+  </owl:Class>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#SlotsJackpot">
+    <rdfs:label xml:lang="es">Slots - Jackpot</rdfs:label>
+    <un2:deJuego>
+      <un2:Tragamonedas rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoSlots">
+        <un2:categoria rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaSlots"/>
+        <un2:RTP rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.96</un2:RTP>
+        <un2:ventajaCasa rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.04</un2:ventajaCasa>
+        <un2:descripcion xml:lang="es">Tragamonedas RTP 96%.</un2:descripcion>
+        <un2:edadMinima rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</un2:edadMinima>
+        <un2:requiere xml:lang="es">Cuenta verificada KYC (online)</un2:requiere>
+      </un2:Tragamonedas>
+    </un2:deJuego>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0001</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1000</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Bingo">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMesa"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#reguladoPor">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion"/>
+  </owl:ObjectProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#requiere"/>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#VIP">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+  </owl:Class>
+  <un2:Publicidad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PublicidadBonos">
+    <un2:descripcion xml:lang="es">Anuncios de bonos de bienvenida</un2:descripcion>
+    <un2:impactaPercepcion>
+      <un2:ImpactoSocial rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ocio">
+        <rdfs:comment xml:lang="es">Uso recreativo y moderado del juego.</rdfs:comment>
+        <un2:descripcion xml:lang="es">Uso recreativo moderado.</un2:descripcion>
+      </un2:ImpactoSocial>
+    </un2:impactaPercepcion>
+  </un2:Publicidad>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Seguridad">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#otorga">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Estrategia"/>
+  </owl:ObjectProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#utilizaEstrategia">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Estrategia"/>
+  </rdf:Property>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Sportsbook">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoApuestasDeportivas"/>
+  </owl:Class>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#descripcion">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#usaVRPara">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G6">
+    <un2:asignadaA>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorLuis"/>
+    </un2:asignadaA>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">400</un2:Monto>
+  </un2:Ganancia>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Nombre">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#HouseEdge">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#pagaMultiplicador">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EventoJuego"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Capacidad">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </owl:DatatypeProperty>
+  <un2:Regulacion rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionMX">
+    <un2:regulacionEn>
+      <un2:Pais rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Mexico">
+        <un2:tasaImpuestoGanancia rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.07</un2:tasaImpuestoGanancia>
+      </un2:Pais>
+    </un2:regulacionEn>
+    <un2:descripcion xml:lang="es">Certificación RNG online y control de publicidad.</un2:descripcion>
+  </un2:Regulacion>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G3">
+    <un2:asignadaA>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorMaria"/>
+    </un2:asignadaA>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">800</un2:Monto>
+  </un2:Ganancia>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#aplicaEn">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Disenio"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+  </rdf:Property>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G4">
+    <un2:asignadaA>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorSofia"/>
+    </un2:asignadaA>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">250</un2:Monto>
+  </un2:Ganancia>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RTP">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <un2:Regulacion rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionPE">
+    <un2:regulacionEn>
+      <un2:Pais rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Peru">
+        <un2:tasaImpuestoGanancia rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.10</un2:tasaImpuestoGanancia>
+      </un2:Pais>
+    </un2:regulacionEn>
+    <un2:descripcion xml:lang="es">Impuesto a ganancias, auditorías y juego responsable.</un2:descripcion>
+  </un2:Regulacion>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#usaPlataforma">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoOnline"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+  </owl:ObjectProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#apuestaMin">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Impuesto"/>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#usaTecnologia">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tecnologia"/>
+  </rdf:Property>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#asignadaA">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Edad">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <un2:Crupier rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CrupierJuan">
+    <un2:descripcion xml:lang="es">Gira la ruleta, canta resultados y paga apuestas.</un2:descripcion>
+  </un2:Crupier>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#UbicacionPais">
+    <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ubicación"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#tieneVariante">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+  </rdf:Property>
+  <un2:Casino rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino3">
+    <un2:Nombre>Casino Santa Cruz Prime</un2:Nombre>
+    <un2:UbicacionCiudad>Santa Cruz</un2:UbicacionCiudad>
+    <un2:utilizaEstrategia>
+      <un2:Estrategia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaBonos">
+        <rdfs:label xml:lang="es">Bonos de bienvenida</rdfs:label>
+        <rdfs:comment xml:lang="es">Bonos y giros gratis para atraer nuevos jugadores.</rdfs:comment>
+        <un2:descripcion xml:lang="es">Créditos y giros gratis por primer depósito.</un2:descripcion>
+      </un2:Estrategia>
+    </un2:utilizaEstrategia>
+    <un2:utilizaEstrategia>
+      <un2:Estrategia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaVIP">
+        <rdfs:label xml:lang="es">Programa VIP</rdfs:label>
+        <rdfs:comment xml:lang="es">Fidelización por niveles con recompensas y eventos exclusivos.</rdfs:comment>
+        <un2:descripcion xml:lang="es">Niveles con recompensas y eventos.</un2:descripcion>
+      </un2:Estrategia>
+    </un2:utilizaEstrategia>
+    <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorCarlos"/>
+    <un2:tieneJugador>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorElena"/>
+    </un2:tieneJugador>
+  </un2:Casino>
+  <un2:ApuestaDeportiva rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ClasicoLocal">
+    <un2:descripcion xml:lang="es">Clásico local de fútbol</un2:descripcion>
+  </un2:ApuestaDeportiva>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoFisiico">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+  </owl:Class>
+  <un2:Persona rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PersonaMaria">
+    <un2:experimentaImpacto>
+      <un2:ImpactoSocial rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Endeudamiento">
+        <rdfs:comment xml:lang="es">Deudas por gasto excesivo en juegos de azar.</rdfs:comment>
+        <un2:descripcion xml:lang="es">Deudas por gasto excesivo.</un2:descripcion>
+      </un2:ImpactoSocial>
+    </un2:experimentaImpacto>
+  </un2:Persona>
+  <un2:Casino rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino2">
+    <un2:Nombre>Casino La Paz Royale</un2:Nombre>
+    <un2:UbicacionCiudad>La Paz</un2:UbicacionCiudad>
+    <un2:utilizaEstrategia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaVIP"/>
+    <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorLuis"/>
+    <un2:tieneJugador>
+      <un2:Jugador rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorAna">
+        <un2:experimentalImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ocio"/>
+      </un2:Jugador>
+    </un2:tieneJugador>
+  </un2:Casino>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CrupierRuleta">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Bonus">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:Class>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G1">
+    <un2:asignadaA>
+      <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+        <un2:participaEn rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta1"/>
+        <un2:Edad rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25</un2:Edad>
+        <un2:LimiteApuestas rdf:datatype="http://www.w3.org/2001/XMLSchema#int">5000</un2:LimiteApuestas>
+        <un2:PuntosAcumulados rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1200</un2:PuntosAcumulados>
+        <un2:experimentalImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Adiccion"/>
+      </owl:NamedIndividual>
+    </un2:asignadaA>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</un2:Monto>
+  </un2:Ganancia>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Requisitos">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#deJuego">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EventoJuego"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </rdf:Property>
+  <owl:Ontology rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2">
+    <owl:imports rdf:resource="file:///C:/Web/datos-un2.ttl"/>
+  </owl:Ontology>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaVirtual">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+  </owl:Class>
+  <un2:Disenio rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#DisenioCasinoOnline">
+    <un2:usaColor xml:lang="es">Azul y blanco</un2:usaColor>
+    <un2:buscaEfecto xml:lang="es">Confianza y claridad en interfaz</un2:buscaEfecto>
+    <un2:aplicaEn>
+      <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaCasinoOnline">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoOnline"/>
+        <un2:usaPlataforma rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino1"/>
+        <un2:Cobertura>Bolvia, Perú, Chile</un2:Cobertura>
+        <un2:Nombre>CASINO METABET</un2:Nombre>
+        <un2:Seguridad>RNG certificado AES256</un2:Seguridad>
+        <un2:UbicacionCiudad rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Madrid"/>
+        <un2:reguladoPor rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionES"/>
+        <un2:medidaSeguridad xml:lang="es">TLS + auditoría RNG externa</un2:medidaSeguridad>
+        <un2:transparenciaNivel rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</un2:transparenciaNivel>
+        <un2:soporteMovil rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</un2:soporteMovil>
+        <un2:usaTecnologia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#IA"/>
+        <un2:usaTecnologia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#VR"/>
+        <un2:usaIAPara xml:lang="es">Detección de patrones problemáticos y fraude</un2:usaIAPara>
+        <un2:usaVRPara xml:lang="es">Mesas virtuales inmersivas</un2:usaVRPara>
+        <un2:modeloNegocio rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RealMoney"/>
+        <un2:otorga rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaBonos"/>
+        <un2:utilizaEstrategia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaVIP"/>
+        <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro"/>
+        <un2:tieneJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoSlots"/>
+        <un2:tieneJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoBlackjack"/>
+      </owl:NamedIndividual>
+    </un2:aplicaEn>
+  </un2:Disenio>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#reglaDe">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regla"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Estado">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#buscaEfecto">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Disenio"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#transparenciaNivel">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ritmoManosPorHora">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#tasaImpuestoGanancia">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Pais"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#UbicacionDireccion">
+    <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ubicación"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#medidaSeguridad">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G7">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorAna"/>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">350</un2:Monto>
+  </un2:Ganancia>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#LimiteApuestas">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#edadMinima">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+  </rdf:Property>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G5">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorLuis"/>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1200</un2:Monto>
+  </un2:Ganancia>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaMultiple">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:Class>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#restriccion">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Experiencia">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Beneficios">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#participaEn">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:ObjectProperty>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G10">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorElena"/>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">450</un2:Monto>
+  </un2:Ganancia>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Odds">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CrupierBlackjack">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+  </owl:Class>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EventoBlackjackNatural">
+    <rdfs:label xml:lang="es">Blackjack natural (A+10)</rdfs:label>
+    <un2:deJuego>
+      <un2:Blackjack rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoBlackjack">
+        <un2:categoria rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaCartas"/>
+        <un2:RTP rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.995</un2:RTP>
+        <un2:ventajaCasa rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.005</un2:ventajaCasa>
+        <un2:descripcion xml:lang="es">Estrategia básica; pago 3:2 al blackjack.</un2:descripcion>
+        <un2:tieneVariante rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Blackjack6Mazos"/>
+        <un2:edadMinima rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</un2:edadMinima>
+        <un2:requiere xml:lang="es">Documento de identidad</un2:requiere>
+      </un2:Blackjack>
+    </un2:deJuego>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0475</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.5</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaRuletaDocena">
+    <rdfs:label xml:lang="es">Ruleta - Docena</rdfs:label>
+    <un2:deJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta"/>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3243</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#experimentalImpacto">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Persona"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ImpactoSocial"/>
+    <owl:equivalentProperty>
+      <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#experimentaImpacto">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Persona"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ImpactoSocial"/>
+      </rdf:Property>
+    </owl:equivalentProperty>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#categoria">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaJuego"/>
+  </rdf:Property>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaRuletaPar">
+    <rdfs:label xml:lang="es">Ruleta - Par</rdfs:label>
+    <un2:deJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta"/>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.4865</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <un2:ModeloNegocio rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#SocialCasino">
+    <rdfs:label xml:lang="es">Social/Freemium</rdfs:label>
+  </un2:ModeloNegocio>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#soporteMovil">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#TipoApuesta">
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tipo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+      </owl:DatatypeProperty>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#probabilidad">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EventoJuego"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#regulacionEn">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Pais"/>
+  </rdf:Property>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaBlockchain">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+  </owl:Class>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#modeloNegocio">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ModeloNegocio"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#usaColor">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Disenio"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#HistorialApuestas">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CondicionesUso">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaProgresiva">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaSimple">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CrupierPoker">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PuntosAcumulados">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+  </owl:DatatypeProperty>
+  <un2:Persona rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PersonaLuis">
+    <un2:experimentaImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ocio"/>
+  </un2:Persona>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RecompensaVIP">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:Class>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#usaIAPara">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Poker">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoCartas"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jackpot">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:Class>
+  <un2:Persona rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PersonaAna">
+    <un2:experimentaImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Endeudamiento"/>
+  </un2:Persona>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#tieneJugador">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador"/>
+  </owl:ObjectProperty>
+  <un2:Ciudad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CiudadDeMexico">
+    <un2:enPais rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Mexico"/>
+  </un2:Ciudad>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#condicionDesarrollo">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G2">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro"/>
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorAna"/>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">300</un2:Monto>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1500</un2:Monto>
+  </un2:Ganancia>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Fichas">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#FechaHora">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+  </owl:DatatypeProperty>
+  <un2:Persona rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PersonaSofia">
+    <un2:experimentaImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ocio"/>
+  </un2:Persona>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ProbabilidadAsociada">
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Probabilidad">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+      </owl:DatatypeProperty>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </owl:DatatypeProperty>
+  <un2:Persona rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PersonaPedro">
+    <un2:experimentaImpacto>
+      <un2:ImpactoSocial rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Adiccion">
+        <rdfs:comment xml:lang="es">Dependencia al juego y pérdida de control.</rdfs:comment>
+        <un2:descripcion xml:lang="es">Dependencia y pérdida de control.</un2:descripcion>
+      </un2:ImpactoSocial>
+    </un2:experimentaImpacto>
+    <un2:experimentalImpacto rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Adiccion"/>
+  </un2:Persona>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Licencia">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#impactaPercepcion">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Publicidad"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ImpactoSocial"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#apuestaMax">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaVivo">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+  </owl:Class>
+  <un2:Ciudad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Lima">
+    <un2:enPais rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Peru"/>
+  </un2:Ciudad>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#emplea">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#MontoApostado">
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Monto">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+      </owl:DatatypeProperty>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:DatatypeProperty>
+  <un2:Ganancia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#G9">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorElena"/>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">300</un2:Monto>
+  </un2:Ganancia>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Comps">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Categoria">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#tieneJuego">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#condicionFin">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ReglasBasicas">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Dinero">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:Class>
+  <un2:Ciudad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#LaPaz">
+    <un2:enPais>
+      <un2:Pais rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Bolivia">
+        <un2:tasaImpuestoGanancia rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.13</un2:tasaImpuestoGanancia>
+      </un2:Pais>
+    </un2:enPais>
+  </un2:Ciudad>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#enPais">
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Pais"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ventajaCasa">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Cobertura">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <un2:EventoJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaRuletaRojo">
+    <rdfs:label xml:lang="es">Ruleta - Rojo</rdfs:label>
+    <un2:deJuego rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta"/>
+    <un2:probabilidad rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.4865</un2:probabilidad>
+    <un2:pagaMultiplicador rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</un2:pagaMultiplicador>
+  </un2:EventoJuego>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PaisJurisdiccion">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#genera">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+    <rdfs:range rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia"/>
+  </owl:ObjectProperty>
+  <rdf:Property rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#condicionInicio">
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Puntos">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Jugador">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoCartas">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  </owl:Class>
+  <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Rol">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:domain rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#crupierJuan">
+    <un2:Experiencia>5 años certificado</un2:Experiencia>
+    <un2:Rol>ruleta</un2:Rol>
+  </owl:NamedIndividual>
+  <un2:Variante rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RuletaEuropea">
+    <un2:apuestaMin rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</un2:apuestaMin>
+    <un2:apuestaMax rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</un2:apuestaMax>
+    <un2:ritmoManosPorHora rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">60</un2:ritmoManosPorHora>
+    <un2:condicionInicio xml:lang="es">Se aceptan apuestas; el crupier gira la rueda.</un2:condicionInicio>
+    <un2:condicionDesarrollo xml:lang="es">La bola gira; se cierran apuestas ('no va más').</un2:condicionDesarrollo>
+    <un2:condicionFin xml:lang="es">La bola cae en un número y se pagan apuestas.</un2:condicionFin>
+  </un2:Variante>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMesa">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#PlataformaOnline"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#IA">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tecnologia"/>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regla"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Persona"/>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia1">
+    <un2:asignadaA rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro"/>
+    <un2:FechaHora rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2025-09-30T15:00:00</un2:FechaHora>
+    <un2:Monto rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</un2:Monto>
+    <un2:Tipo>dinero</un2:Tipo>
+  </owl:NamedIndividual>
+  <un2:Pais rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Espana">
+    <un2:tasaImpuestoGanancia rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.20</un2:tasaImpuestoGanancia>
+  </un2:Pais>
+  <un2:Variante rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Blackjack6Mazos">
+    <un2:apuestaMin rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10</un2:apuestaMin>
+    <un2:apuestaMax rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1000</un2:apuestaMax>
+    <un2:ritmoManosPorHora rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</un2:ritmoManosPorHora>
+    <un2:condicionInicio xml:lang="es">Apuestas colocadas; se reparten dos cartas.</un2:condicionInicio>
+    <un2:condicionDesarrollo xml:lang="es">Los jugadores piden/plantan/doblan; el crupier juega.</un2:condicionDesarrollo>
+    <un2:condicionFin xml:lang="es">Se comparan manos y se paga.</un2:condicionFin>
+  </un2:Variante>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tragamonedas">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMaquinas"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </owl:Class>
+  <un2:Estrategia rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaEventos">
+    <rdfs:label xml:lang="es">Torneos y eventos</rdfs:label>
+    <rdfs:comment xml:lang="es">Torneos semanales, shows y promociones para retención.</rdfs:comment>
+    <un2:descripcion xml:lang="es">Torneos semanales y shows.</un2:descripcion>
+  </un2:Estrategia>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Crupier">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Rol"/>
+  </owl:Class>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino1">
+    <rdf:type rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+    <un2:emplea rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#crupierJuan"/>
+    <un2:ofrece rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoRuleta"/>
+    <un2:otorga>
+      <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RecompensaVip">
+        <un2:Beneficios>Acceso a salas exclusivas, bonos del 20%</un2:Beneficios>
+        <un2:CondicionesUso>Válido solo para jugadores con mas de 1000 puntos acumulados</un2:CondicionesUso>
+        <un2:Tipo>VIP</un2:Tipo>
+      </owl:NamedIndividual>
+    </un2:otorga>
+    <un2:otorga rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaVIP"/>
+    <un2:reguladoPor>
+      <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionBolivia">
+        <un2:Nombre>Autoridad de juegos de Bolivia</un2:Nombre>
+        <un2:PaisJurisdiccion>Bolivia</un2:PaisJurisdiccion>
+        <un2:Requisitos>Cumplimiento de las normas de azar y auditoria anual</un2:Requisitos>
+      </owl:NamedIndividual>
+    </un2:reguladoPor>
+    <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorPedro"/>
+    <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorMaria"/>
+    <un2:tieneJugador rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JugadorSofia"/>
+    <un2:Capacidad rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</un2:Capacidad>
+    <un2:Nombre>Casino Real</un2:Nombre>
+    <un2:Nombre>Casino Cochabamba Center</un2:Nombre>
+    <un2:Tipo>Fisico</un2:Tipo>
+    <un2:UbicacionCiudad>Cochabamba</un2:UbicacionCiudad>
+    <un2:UbicacionPais>Bolivia</un2:UbicacionPais>
+    <un2:utilizaEstrategia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaBonos"/>
+    <un2:utilizaEstrategia rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EstrategiaEventos"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta1">
+    <un2:genera rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia1"/>
+    <un2:Estado>en curso</un2:Estado>
+    <un2:MontoApostado rdf:datatype="http://www.w3.org/2001/XMLSchema#int">200</un2:MontoApostado>
+    <un2:ProbabilidadAsociada rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</un2:ProbabilidadAsociada>
+    <un2:TipoApuesta>simple</un2:TipoApuesta>
+  </owl:NamedIndividual>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ruleta">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMesa"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </owl:Class>
+  <un2:Regulacion rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionES">
+    <un2:regulacionEn rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Espana"/>
+    <un2:descripcion xml:lang="es">Autoprohibidos, límites de bonos, transparencia en RTP.</un2:descripcion>
+  </un2:Regulacion>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#VR">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tecnologia"/>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#EventoJuego"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ModeloNegocio"/>
+  <un2:Regulacion rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RegulacionBO">
+    <un2:regulacionEn rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Bolivia"/>
+    <un2:descripcion xml:lang="es">Licencia estatal, verificación KYC, límites de apuesta y horario.</un2:descripcion>
+  </un2:Regulacion>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Estrategia"/>
+  <un2:Ciudad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Madrid">
+    <un2:enPais rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Espana"/>
+  </un2:Ciudad>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoOnline">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ApuestaDeportiva">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  </owl:Class>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Pais"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  <un2:CategoriaJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaSlots">
+    <rdfs:label xml:lang="es">Slots</rdfs:label>
+  </un2:CategoriaJuego>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CasinoFisico">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Casino"/>
+  </rdfs:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoApuestasDeportivas">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  </owl:Class>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Variante"/>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMaquinas">
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoDeAzar"/>
+  </owl:Class>
+  <un2:CategoriaJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaCartas">
+    <rdfs:label xml:lang="es">Cartas</rdfs:label>
+  </un2:CategoriaJuego>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#ImpactoSocial"/>
+  <un2:ModeloNegocio rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#RealMoney">
+    <rdfs:label xml:lang="es">Dinero real</rdfs:label>
+  </un2:ModeloNegocio>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaJuego"/>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Blackjack">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#JuegoMesa"/>
+    <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Juego"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ganancia">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Regulacion">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <un2:CategoriaJuego rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#CategoriaMesa">
+    <rdfs:label xml:lang="es">Mesa</rdfs:label>
+  </un2:CategoriaJuego>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Apuesta"/>
+  <owl:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Recompensas"/>
+  <un2:Ciudad rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Cochabamba">
+    <un2:enPais rdf:resource="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Bolivia"/>
+  </un2:Ciudad>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Disenio"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Ciudad"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Tecnologia"/>
+  <rdfs:Class rdf:about="http://www.semanticweb.org/dzeba/ontologies/2025/8/untitled-ontology-2#Publicidad"/>
+</rdf:RDF>
