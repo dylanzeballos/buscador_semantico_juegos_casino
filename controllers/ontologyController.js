@@ -1,4 +1,5 @@
 const ontologyService = require('../services/ontologyService');
+const dbpediaService = require('../services/dbpediaService');
 const ResponseHandler = require('../utils/responseHandler');
 const Logger = require('../utils/logger');
 
@@ -39,7 +40,7 @@ class OntologyController {
 
   async searchByText(req, res) {
     try {
-      const { query } = req.query;
+      const { query, includeDbpedia } = req.query;
       
       if (!query) {
         return ResponseHandler.badRequest(res, 'Parámetro "query" es requerido');
@@ -51,13 +52,26 @@ class OntologyController {
       }
 
       Logger.info(`Buscando: ${query}`);
-      const results = ontologyService.searchByText(query);
-      Logger.info(`Se encontraron ${results.length} resultados para: ${query}`);
+      
+      const localResults = ontologyService.searchByText(query);
+      Logger.info(`Se encontraron ${localResults.length} resultados locales para: ${query}`);
+      
+      let dbpediaResults = null;
+      if (includeDbpedia === 'true') {
+        Logger.info(`Buscando en DBpedia: ${query}`);
+        dbpediaResults = await dbpediaService.searchDBpedia(query);
+        Logger.info(`DBpedia - EN: ${dbpediaResults.english.length}, ES: ${dbpediaResults.spanish.length}`);
+      }
       
       return ResponseHandler.success(
         res, 
-        results, 
-        `Se encontraron ${results.length} resultados`
+        {
+          local: localResults,
+          dbpedia: dbpediaResults,
+          totalLocal: localResults.length,
+          totalDbpedia: dbpediaResults ? dbpediaResults.total : 0
+        },
+        `Se encontraron ${localResults.length} resultados locales${dbpediaResults ? ` y ${dbpediaResults.total} en DBpedia` : ''}`
       );
     } catch (error) {
       Logger.error('Error en la búsqueda:', error);
@@ -102,6 +116,50 @@ class OntologyController {
       return ResponseHandler.success(res, null, 'Ontología recargada exitosamente');
     } catch (error) {
       Logger.error('Error al recargar ontología:', error);
+      return ResponseHandler.error(res, error.message, 500);
+    }
+  }
+
+  async searchDbpedia(req, res) {
+    try {
+      const { query } = req.query;
+      
+      if (!query) {
+        return ResponseHandler.badRequest(res, 'Parámetro "query" es requerido');
+      }
+
+      Logger.info(`Buscando en DBpedia: ${query}`);
+      const results = await dbpediaService.searchDBpedia(query);
+      
+      return ResponseHandler.success(
+        res,
+        results,
+        `Se encontraron ${results.total} resultados en DBpedia (EN: ${results.english.length}, ES: ${results.spanish.length})`
+      );
+    } catch (error) {
+      Logger.error('Error al buscar en DBpedia:', error);
+      return ResponseHandler.error(res, error.message, 500);
+    }
+  }
+
+  async searchCasinoGameDbpedia(req, res) {
+    try {
+      const { game } = req.query;
+      
+      if (!game) {
+        return ResponseHandler.badRequest(res, 'Parámetro "game" es requerido');
+      }
+
+      Logger.info(`Buscando juego en DBpedia: ${game}`);
+      const results = await dbpediaService.searchCasinoGame(game);
+      
+      return ResponseHandler.success(
+        res,
+        results,
+        results.found ? `Información encontrada para: ${game}` : `No se encontró información para: ${game}`
+      );
+    } catch (error) {
+      Logger.error('Error al buscar juego en DBpedia:', error);
       return ResponseHandler.error(res, error.message, 500);
     }
   }

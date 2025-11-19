@@ -24,12 +24,16 @@ html(lang="es")
               .input-group
                 input#searchInput.form-control(
                   type='text',
-                  placeholder='Buscar: ruleta, blackjack, póker...',
+                  placeholder='Buscar juegos: ruleta, blackjack, póker...',
                   aria-label='Buscar'
                 )
                 button#searchBtn.btn(type='button')
                   i.fas.fa-search.me-2
                   | BUSCAR
+              .form-check.form-check-inline.mt-2.ms-2
+                input#includeDbpedia.form-check-input(type='checkbox')
+                label.form-check-label.text-white.small(for='includeDbpedia')
+                  | Incluir DBpedia (EN/ES)
           .col-md-3.text-end
             ul.navbar-nav.ms-auto
               li.nav-item

@@ -2,21 +2,8 @@ extends layout
 
 block content
   .row.g-4
-    // Sidebar - Categorías
-    .col-lg-3
-      .card
-        .card-header
-          i.fas.fa-layer-group.me-2
-          | CATEGORÍAS
-        .card-body.p-0
-          #classesList.list-group.list-group-flush
-            .text-center.py-4
-              .spinner-border.spinner-border-sm(role='status')
-                span.visually-hidden Cargando...
-              p.mt-2.mb-0.small Cargando categorías...
-
     // Main Content - Resultados
-    .col-lg-9
+    .col-12
       .card
         .card-header.d-flex.justify-content-between.align-items-center
           div
@@ -30,7 +17,7 @@ block content
                 i.fas.fa-info-circle.fa-2x.me-3
                 div
                   strong.d-block.mb-1 Bienvenido al Buscador Semántico de Casinos
-                  span Utiliza el buscador arriba o selecciona una categoría para explorar
+                  span Utiliza el buscador arriba para comenzar tu búsqueda
 
   // Modal para estadísticas
   #statsModal.modal.fade(tabindex='-1')

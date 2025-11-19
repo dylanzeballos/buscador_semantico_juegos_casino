@@ -1,19 +1,16 @@
 const API_BASE_URL = '/api/ontology';
 
-let currentClasses = [];
 let currentResults = [];
 
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Buscador Semántico Inicializado');
-  
-  loadClasses();
   
   const resultsContainer = document.getElementById('resultsContainer');
   if (resultsContainer) {
     resultsContainer.innerHTML = `
       <div class="alert alert-info mb-0" role="alert">
         <i class="fas fa-lightbulb me-2"></i>
-        Utiliza el buscador o selecciona una clase para ver los resultados
+        Utiliza el buscador para ver los resultados
       </div>
     `;
   }
@@ -26,50 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-async function loadClasses() {
-  try {
-    showLoading('classesList');
-    
-    const response = await fetch(`${API_BASE_URL}/classes`);
-    const data = await response.json();
-    
-    if (data.success) {
-      currentClasses = data.data;
-      renderClasses(data.data);
-    } else {
-      showError('classesList', 'Error al cargar las clases');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    showError('classesList', 'Error de conexión');
-  }
-}
-
-function renderClasses(classes) {
-  const container = document.getElementById('classesList');
-  
-  if (classes.length === 0) {
-    container.innerHTML = '<div class="text-center text-muted p-3"><i class="fas fa-exclamation-circle me-2"></i>No hay clases disponibles</div>';
-    return;
-  }
-  
-  let html = '';
-  classes.forEach(cls => {
-    const displayName = cls.label || cls.name;
-    html += `
-      <a href="#" class="list-group-item list-group-item-action d-flex align-items-center" onclick="loadInstancesOfClass('${cls.name}'); return false;">
-        <i class="fas fa-folder me-3 text-info"></i>
-        <span class="flex-grow-1">${displayName}</span>
-        <i class="fas fa-chevron-right text-muted small"></i>
-      </a>
-    `;
-  });
-  
-  container.innerHTML = html;
-}
 
 async function performSearch() {
   const searchInput = document.getElementById('searchInput');
+  const includeDbpedia = document.getElementById('includeDbpedia');
   const query = searchInput.value.trim();
   
   if (!query) {
@@ -80,12 +37,18 @@ async function performSearch() {
   try {
     showLoading('resultsContainer');
     
-    const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(query)}`);
+    const includeDbpediaParam = includeDbpedia && includeDbpedia.checked ? '&includeDbpedia=true' : '';
+    const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(query)}${includeDbpediaParam}`);
     const data = await response.json();
     
     if (data.success) {
-      currentResults = data.data;
-      renderResults(data.data, `Resultados de búsqueda para: "${query}"`);
+      if (data.data.dbpedia) {
+        renderCombinedResults(data.data, `Resultados para: "${query}"`);
+      } else {
+        const results = data.data.local || data.data;
+        currentResults = results;
+        renderResults(results, `Resultados de búsqueda para: "${query}"`);
+      }
     } else {
       showError('resultsContainer', 'Error en la búsqueda');
     }
@@ -357,3 +320,130 @@ function showAlert(message, type = 'info') {
   }, 3000);
 }
 
+function renderCombinedResults(data, title) {
+  const container = document.getElementById('resultsContainer');
+  const countBadge = document.getElementById('resultsCount');
+  
+  const localResults = data.local || [];
+  const dbpediaResults = data.dbpedia || { english: [], spanish: [] };
+  const totalResults = localResults.length + dbpediaResults.english.length + dbpediaResults.spanish.length;
+  
+  if (countBadge) {
+    countBadge.textContent = totalResults;
+  }
+  
+  if (totalResults === 0) {
+    container.innerHTML = `
+      <div class="alert alert-warning mb-0" role="alert">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+          <div>
+            <strong class="d-block">No se encontraron resultados</strong>
+            <span>Intenta con otros términos o explora las categorías</span>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = `
+    <div class="mb-3">
+      <h6 class="text-gold mb-2 text-uppercase">
+        <i class="fas fa-filter me-2"></i>
+        ${title}
+      </h6>
+      <div class="d-flex gap-2 flex-wrap">
+        <span class="badge bg-primary">Local: ${localResults.length}</span>
+        <span class="badge bg-primary">DBpedia EN: ${dbpediaResults.english.length}</span>
+        <span class="badge bg-primary">DBpedia ES: ${dbpediaResults.spanish.length}</span>
+      </div>
+    </div>
+  `;
+  
+  if (localResults.length > 0) {
+    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-database me-2"></i>Ontología Local</h6>';
+    localResults.forEach((result, index) => {
+      html += renderResultCard(result, index, 'local');
+    });
+  }
+  
+  if (dbpediaResults.english.length > 0) {
+    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (English)</h6>';
+    dbpediaResults.english.forEach((result, index) => {
+      html += renderDbpediaCard(result, index, 'en');
+    });
+  }
+  
+  if (dbpediaResults.spanish.length > 0) {
+    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (Español)</h6>';
+    dbpediaResults.spanish.forEach((result, index) => {
+      html += renderDbpediaCard(result, index, 'es');
+    });
+  }
+  
+  container.innerHTML = html;
+}
+
+function renderResultCard(result, index, prefix) {
+  const properties = result.properties || {};
+  const propertiesCount = Object.keys(properties).length;
+  
+  return `
+    <div class="card mb-3 result-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 d-flex align-items-center text-gold">
+          <i class="fas fa-cube me-2"></i>
+          <strong>${result.name}</strong>
+        </h6>
+        ${propertiesCount > 0 ? `
+        <button class="btn btn-sm btn-outline-primary" onclick="toggleProperties('${prefix}-${index}')">
+          <i class="fas fa-info-circle me-1"></i>
+          ${propertiesCount} PROPIEDADES
+        </button>
+        ` : ''}
+      </div>
+      ${propertiesCount > 0 ? `
+      <div id="properties-${prefix}-${index}" class="card-body collapse">
+        ${renderProperties(properties)}
+      </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function renderDbpediaCard(result, index, lang) {
+  const hasAbstract = result.abstract && result.abstract.length > 0;
+  const shortAbstract = hasAbstract ? result.abstract.substring(0, 200) + '...' : '';
+  
+  return `
+    <div class="card mb-3 result-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 d-flex align-items-center text-gold">
+          <i class="fas fa-external-link-alt me-2"></i>
+          <strong>${result.label}</strong>
+        </h6>
+        ${hasAbstract ? `
+        <button class="btn btn-sm btn-outline-primary" onclick="toggleProperties('dbpedia-${lang}-${index}')">
+          <i class="fas fa-info-circle me-1"></i>
+          VER INFO
+        </button>
+        ` : ''}
+      </div>
+      ${hasAbstract ? `
+      <div id="properties-dbpedia-${lang}-${index}" class="card-body collapse">
+        <div class="mb-3">
+          <strong class="text-gold d-block mb-2">Descripción:</strong>
+          <p class="text-white mb-0">${result.abstract}</p>
+        </div>
+        <div>
+          <strong class="text-gold d-block mb-2">Fuente:</strong>
+          <a href="${result.uri}" target="_blank" class="text-white">
+            <i class="fas fa-external-link-alt me-1"></i>Ver en DBpedia
+          </a>
+        </div>
+      </div>
+      ` : ''}
+    </div>
+  `;
+}
