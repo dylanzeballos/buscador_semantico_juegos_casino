@@ -137,46 +137,81 @@ function renderResults(results, title) {
     `;
   }
   
-  const resultsHtml = results.map(result => {
-    const propertiesHtml = Object.entries(result.properties)
-      .map(([key, value]) => {
-        const displayKey = key.split('#').pop();
-        return `
-          <div class="mb-2">
-            <i class="fas fa-chevron-right text-casino-gold me-2"></i>
-            <strong class="text-casino-gold">${displayKey}:</strong>
-            <span class="text-light ms-2">${value}</span>
-          </div>
-        `;
-      })
-      .join('');
+  const resultsHtml = results.map((result, index) => {
+    const filteredProperties = Object.entries(result.properties || {})
+      .filter(([key, value]) => {
+        const keyLower = key.toLowerCase();
+        return !keyLower.includes('subclass') && 
+               !keyLower.includes('type') && 
+               !keyLower.includes('http://') &&
+               !keyLower.includes('https://') &&
+               value && 
+               typeof value === 'string' &&
+               !value.startsWith('http');
+      });
+
+    let description = '';
+    if (filteredProperties.length > 0) {
+      const firstProp = filteredProperties[0];
+      const propValue = firstProp[1];
+      description = propValue.length > 150 
+        ? propValue.substring(0, 150) + '...' 
+        : propValue;
+    } else {
+      description = 'Información sobre ' + result.name;
+    }
+
+    const collapseId = `details-${index}`;
 
     return `
-      <div class="col-md-6 col-lg-4 mb-4">
-        <div class="card result-card h-100">
+      <div class="col-12 mb-3">
+        <div class="card result-card">
           <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <h5 class="card-title text-casino-gold mb-0">
-                <i class="fas fa-dice me-2"></i>
-                ${result.name}
-              </h5>
-              ${result.nlpInfo ? `
-                <span class="badge bg-casino-gold text-dark" 
-                      title="Relevancia de búsqueda">
-                  ${result.nlpInfo.relevanceScore}
-                  <i class="fas fa-star ms-1"></i>
-                </span>
-              ` : ''}
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h5 class="card-title text-casino-gold mb-2">
+                  <i class="fas fa-dice me-2"></i>
+                  ${result.name}
+                  ${result.nlpInfo ? `
+                    <span class="badge bg-casino-gold text-dark ms-2" 
+                          title="Relevancia de búsqueda">
+                      ${result.nlpInfo.relevanceScore}
+                      <i class="fas fa-star ms-1"></i>
+                    </span>
+                  ` : ''}
+                </h5>
+                <p class="text-light mb-2">${description}</p>
+                ${filteredProperties.length > 0 ? `
+                  <button class="btn btn-sm btn-outline-casino-gold" 
+                          type="button" 
+                          data-bs-toggle="collapse" 
+                          data-bs-target="#${collapseId}">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Ver detalles
+                  </button>
+                ` : ''}
+              </div>
             </div>
-            <div class="properties-list">
-              ${propertiesHtml || '<p class="text-muted fst-italic">Sin propiedades adicionales</p>'}
-            </div>
-          </div>
-          <div class="card-footer bg-transparent border-top border-dark">
-            <small class="text-muted">
-              <i class="fas fa-link me-1"></i>
-              ${result.uri.split('#').pop()}
-            </small>
+            ${filteredProperties.length > 0 ? `
+              <div class="collapse mt-3" id="${collapseId}">
+                <div class="card card-body bg-dark border-casino-gold">
+                  <h6 class="text-casino-gold mb-3">
+                    <i class="fas fa-list me-2"></i>
+                    Información detallada
+                  </h6>
+                  ${filteredProperties.map(([key, value]) => {
+                    const displayKey = key.split('#').pop();
+                    return `
+                      <div class="mb-2">
+                        <i class="fas fa-chevron-right text-casino-gold me-2"></i>
+                        <strong class="text-casino-gold">${displayKey}:</strong>
+                        <span class="text-light ms-2">${value}</span>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            ` : ''}
           </div>
         </div>
       </div>
@@ -190,9 +225,7 @@ function renderResults(results, title) {
       ${title}
       <span class="badge bg-casino-gold text-dark ms-2">${results.length}</span>
     </h4>
-    <div class="row">
-      ${resultsHtml}
-    </div>
+    ${resultsHtml}
   `;
 }
 
@@ -421,21 +454,164 @@ function renderCombinedResults(data, title) {
   if (localResults.length > 0) {
     html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-database me-2"></i>Ontología Local</h6>';
     localResults.forEach((result, index) => {
-      html += renderResultCard(result, index, 'local');
+      // Filtrar propiedades no deseadas
+      const filteredProperties = Object.entries(result.properties || {})
+        .filter(([key, value]) => {
+          const keyLower = key.toLowerCase();
+          return !keyLower.includes('subclass') && 
+                 !keyLower.includes('type') && 
+                 !keyLower.includes('http://') &&
+                 !keyLower.includes('https://') &&
+                 value && 
+                 typeof value === 'string' &&
+                 !value.startsWith('http');
+        });
+
+      // Crear descripción
+      let description = '';
+      if (filteredProperties.length > 0) {
+        const firstProp = filteredProperties[0];
+        description = firstProp[1].length > 150 
+          ? firstProp[1].substring(0, 150) + '...' 
+          : firstProp[1];
+      } else {
+        description = 'Información sobre ' + result.name;
+      }
+
+      const collapseId = `local-details-${index}`;
+
+      html += `
+        <div class="col-12 mb-3">
+          <div class="card result-card">
+            <div class="card-body">
+              <h5 class="card-title text-casino-gold mb-2">
+                <i class="fas fa-dice me-2"></i>
+                ${result.name}
+              </h5>
+              <p class="text-light mb-2">${description}</p>
+              ${filteredProperties.length > 0 ? `
+                <button class="btn btn-sm btn-outline-casino-gold" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#${collapseId}">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Ver detalles
+                </button>
+                <div class="collapse mt-3" id="${collapseId}">
+                  <div class="card card-body bg-dark border-casino-gold">
+                    ${filteredProperties.map(([key, value]) => {
+                      const displayKey = key.split('#').pop();
+                      return `
+                        <div class="mb-2">
+                          <i class="fas fa-chevron-right text-casino-gold me-2"></i>
+                          <strong class="text-casino-gold">${displayKey}:</strong>
+                          <span class="text-light ms-2">${value}</span>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     });
   }
   
   if (dbpediaResults.english.length > 0) {
     html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (English)</h6>';
     dbpediaResults.english.forEach((result, index) => {
-      html += renderDbpediaCard(result, index, 'en');
+      const description = result.abstract && result.abstract.length > 150
+        ? result.abstract.substring(0, 150) + '...'
+        : result.abstract || 'No description available';
+      
+      const collapseId = `dbpedia-en-${index}`;
+
+      html += `
+        <div class="col-12 mb-3">
+          <div class="card result-card">
+            <div class="card-body">
+              <h5 class="card-title text-casino-gold mb-2">
+                <i class="fas fa-external-link-alt me-2"></i>
+                ${result.label}
+              </h5>
+              <p class="text-light mb-2">${description}</p>
+              ${result.abstract ? `
+                <button class="btn btn-sm btn-outline-casino-gold" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#${collapseId}">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Ver detalles
+                </button>
+                <div class="collapse mt-3" id="${collapseId}">
+                  <div class="card card-body bg-dark border-casino-gold">
+                    <div class="mb-3">
+                      <strong class="text-casino-gold d-block mb-2">Descripción completa:</strong>
+                      <p class="text-light mb-0">${result.abstract}</p>
+                    </div>
+                    <div>
+                      <a href="${result.uri}" target="_blank" class="btn btn-sm btn-outline-casino-gold">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Ver en DBpedia
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     });
   }
   
   if (dbpediaResults.spanish.length > 0) {
     html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (Español)</h6>';
     dbpediaResults.spanish.forEach((result, index) => {
-      html += renderDbpediaCard(result, index, 'es');
+      const description = result.abstract && result.abstract.length > 150
+        ? result.abstract.substring(0, 150) + '...'
+        : result.abstract || 'Sin descripción disponible';
+      
+      const collapseId = `dbpedia-es-${index}`;
+
+      html += `
+        <div class="col-12 mb-3">
+          <div class="card result-card">
+            <div class="card-body">
+              <h5 class="card-title text-casino-gold mb-2">
+                <i class="fas fa-external-link-alt me-2"></i>
+                ${result.label}
+              </h5>
+              <p class="text-light mb-2">${description}</p>
+              ${result.abstract ? `
+                <button class="btn btn-sm btn-outline-casino-gold" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#${collapseId}">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Ver detalles
+                </button>
+                <div class="collapse mt-3" id="${collapseId}">
+                  <div class="card card-body bg-dark border-casino-gold">
+                    <div class="mb-3">
+                      <strong class="text-casino-gold d-block mb-2">Descripción completa:</strong>
+                      <p class="text-light mb-0">${result.abstract}</p>
+                    </div>
+                    <div>
+                      <a href="${result.uri}" target="_blank" class="btn btn-sm btn-outline-casino-gold">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        Ver en DBpedia
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     });
   }
   
