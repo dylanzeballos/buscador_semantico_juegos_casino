@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const Logger = require('../utils/logger');
 const { OWL_FILE_PATH, ONTOLOGY_NAMESPACE } = require('../config/constants');
+const nlpService = require('./nlpService');
 
 
 class OntologyService {
@@ -119,11 +120,16 @@ class OntologyService {
         throw new Error('Ontología no cargada');
       }
 
+      const nlpResult = nlpService.processQuery(searchText);
+      Logger.info(`NLP procesado - Términos: ${nlpResult.searchTerms.join(', ')}`);
+      Logger.info(`Intención detectada: ${nlpResult.intent}`);
+
       const allStatements = this.store.statements;
       const results = new Map();
-      const searchLower = searchText.toLowerCase();
+      
+      const searchTerms = nlpResult.searchTerms.map(term => term.toLowerCase());
 
-      Logger.info(`Buscando: "${searchText}" en ${allStatements.length} statements`);
+      Logger.info(`Buscando con ${searchTerms.length} términos en ${allStatements.length} statements`);
 
       allStatements.forEach(statement => {
         const subject = statement.subject;
@@ -137,14 +143,19 @@ class OntologyService {
           
           const objectLower = object.value.toLowerCase();
           
-          if (objectLower.includes(searchLower)) {
+          const hasMatch = searchTerms.some(term => objectLower.includes(term));
+          
+          if (hasMatch) {
             const uri = subject.value;
             if (!results.has(uri)) {
               results.set(uri, {
                 uri,
                 name: this.extractLocalName(uri),
-                properties: {}
+                properties: {},
+                relevance: 1
               });
+            } else {
+              results.get(uri).relevance++;
             }
           }
         }
@@ -155,23 +166,39 @@ class OntologyService {
             statement.subject.value.includes('#')) {
           const uri = statement.subject.value;
           const name = this.extractLocalName(uri);
+          const nameLower = name.toLowerCase();
           
-          if (name.toLowerCase().includes(searchLower)) {
+          const hasMatch = searchTerms.some(term => nameLower.includes(term));
+          
+          if (hasMatch) {
             if (!results.has(uri)) {
               results.set(uri, {
                 uri,
                 name,
-                properties: {}
+                properties: {},
+                relevance: 2
               });
+            } else {
+              results.get(uri).relevance += 2;
             }
           }
         }
       });
 
-      const finalResults = Array.from(results.values()).map(result => ({
-        ...result,
-        properties: this.getPropertiesOfInstance($rdf.sym(result.uri))
-      }));
+      const finalResults = Array.from(results.values())
+        .sort((a, b) => b.relevance - a.relevance)
+        .map(result => ({
+          uri: result.uri,
+          name: result.name,
+          properties: this.getPropertiesOfInstance($rdf.sym(result.uri)),
+          nlpInfo: {
+            originalQuery: nlpResult.original,
+            detectedLanguage: nlpResult.language,
+            intent: nlpResult.intent,
+            keywords: nlpResult.keywords,
+            relevanceScore: result.relevance
+          }
+        }));
 
       Logger.info(`Se encontraron ${finalResults.length} resultados para: "${searchText}"`);
       

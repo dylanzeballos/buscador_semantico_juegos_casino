@@ -100,43 +100,100 @@ function renderResults(results, title) {
     return;
   }
   
-  let html = `
-    <div class="mb-3 d-flex justify-content-between align-items-center">
-      <h6 class="text-gold mb-0 text-uppercase">
-        <i class="fas fa-filter me-2"></i>
-        ${title}
-      </h6>
-    </div>
-  `;
-  
-  results.forEach((result, index) => {
-    const properties = result.properties || {};
-    const propertiesCount = Object.keys(properties).length;
-    
-    html += `
-      <div class="card mb-3 result-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h6 class="mb-0 d-flex align-items-center text-gold">
-            <i class="fas fa-cube me-2"></i>
-            <strong>${result.name}</strong>
-          </h6>
-          ${propertiesCount > 0 ? `
-          <button class="btn btn-sm btn-outline-primary" onclick="toggleProperties(${index})">
-            <i class="fas fa-info-circle me-1"></i>
-            ${propertiesCount} PROPIEDADES
-          </button>
-          ` : ''}
+  let nlpInfoHtml = '';
+  if (results[0].nlpInfo) {
+    const nlpInfo = results[0].nlpInfo;
+    nlpInfoHtml = `
+      <div class="alert alert-info mb-4" role="alert">
+        <div class="d-flex align-items-start">
+          <i class="fas fa-brain fa-2x me-3 mt-1"></i>
+          <div class="flex-grow-1">
+            <strong class="d-block mb-2">
+              <i class="fas fa-lightbulb me-2"></i>Análisis NLP de tu consulta
+            </strong>
+            <div class="row g-2 small">
+              <div class="col-md-6">
+                <span class="badge bg-primary me-2">
+                  <i class="fas fa-language"></i>
+                  Idioma: ${nlpInfo.detectedLanguage === 'es' ? 'Español' : 'English'}
+                </span>
+                <span class="badge bg-success">
+                  <i class="fas fa-bullseye"></i>
+                  Intención: ${nlpInfo.intent}
+                </span>
+              </div>
+              ${nlpInfo.keywords && nlpInfo.keywords.length > 0 ? `
+                <div class="col-md-12">
+                  <strong class="d-block mb-1">Palabras clave identificadas:</strong>
+                  ${nlpInfo.keywords.map(kw => 
+                    `<span class="badge bg-warning text-dark me-1">${kw}</span>`
+                  ).join('')}
+                </div>
+              ` : ''}
+            </div>
+          </div>
         </div>
-        ${propertiesCount > 0 ? `
-        <div id="properties-${index}" class="card-body collapse">
-          ${renderProperties(properties)}
-        </div>
-        ` : ''}
       </div>
     `;
-  });
+  }
   
-  container.innerHTML = html;
+  const resultsHtml = results.map(result => {
+    const propertiesHtml = Object.entries(result.properties)
+      .map(([key, value]) => {
+        const displayKey = key.split('#').pop();
+        return `
+          <div class="mb-2">
+            <i class="fas fa-chevron-right text-casino-gold me-2"></i>
+            <strong class="text-casino-gold">${displayKey}:</strong>
+            <span class="text-light ms-2">${value}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    return `
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card result-card h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h5 class="card-title text-casino-gold mb-0">
+                <i class="fas fa-dice me-2"></i>
+                ${result.name}
+              </h5>
+              ${result.nlpInfo ? `
+                <span class="badge bg-casino-gold text-dark" 
+                      title="Relevancia de búsqueda">
+                  ${result.nlpInfo.relevanceScore}
+                  <i class="fas fa-star ms-1"></i>
+                </span>
+              ` : ''}
+            </div>
+            <div class="properties-list">
+              ${propertiesHtml || '<p class="text-muted fst-italic">Sin propiedades adicionales</p>'}
+            </div>
+          </div>
+          <div class="card-footer bg-transparent border-top border-dark">
+            <small class="text-muted">
+              <i class="fas fa-link me-1"></i>
+              ${result.uri.split('#').pop()}
+            </small>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    ${nlpInfoHtml}
+    <h4 class="text-light mb-4">
+      <i class="fas fa-search me-2"></i>
+      ${title}
+      <span class="badge bg-casino-gold text-dark ms-2">${results.length}</span>
+    </h4>
+    <div class="row">
+      ${resultsHtml}
+    </div>
+  `;
 }
 
 function renderProperties(properties) {
