@@ -1,0 +1,249 @@
+extends layout
+
+block content
+  // Breadcrumb navigation
+  nav(aria-label="breadcrumb")
+    ol.breadcrumb
+      li.breadcrumb-item
+        a(href="/")
+          i.fas.fa-home.me-1
+          | Inicio
+      li.breadcrumb-item
+        a(href="#", onclick="history.back(); return false;")
+          i.fas.fa-search.me-1
+          | Resultados
+      li.breadcrumb-item.active(aria-current="page") Detalle
+
+  // Main content container
+  .container-fluid.py-4
+    .row
+      // Main content column
+      .col-lg-8
+        // Result header
+        .result-detail-header.mb-4
+          .d-flex.align-items-start
+            .result-icon.me-3
+              i.fas.fa-cube.fa-2x.text-primary(id="resultIcon")
+            .flex-grow-1
+              h1.h2.mb-2(id="resultTitle") Cargando información...
+              .result-meta.mb-3
+                span.source-badge.me-3(id="sourceBadge")
+                  i.fas.fa-database.me-1
+                  span Cargando...
+                span.uri-info.text-muted.small(id="uriInfo")
+                  i.fas.fa-link.me-1
+                  span Cargando URI...
+              .result-actions
+                button.btn.btn-outline-primary.btn-sm.me-2(onclick="copyToClipboard(); return false;")
+                  i.fas.fa-copy.me-1
+                  | Copiar enlace
+                button.btn.btn-outline-success.btn-sm.me-2(onclick="exportResult(); return false;")
+                  i.fas.fa-download.me-1
+                  | Exportar
+                button.btn.btn-outline-info.btn-sm(onclick="shareResult(); return false;")
+                  i.fas.fa-share.me-1
+                  | Compartir
+
+        // Main description
+        .result-description.mb-4
+          .card
+            .card-header
+              h3.h5.mb-0
+                i.fas.fa-align-left.me-2
+                | Descripción
+            .card-body
+              #mainDescription.description-content
+                .placeholder-glow
+                  .placeholder.col-12
+                  .placeholder.col-8
+                  .placeholder.col-6
+
+        // Properties section
+        .result-properties.mb-4
+          .card
+            .card-header.d-flex.justify-content-between.align-items-center
+              h3.h5.mb-0
+                i.fas.fa-list-ul.me-2
+                | Propiedades
+              button.btn.btn-sm.btn-outline-secondary(onclick="togglePropertiesView(); return false;")
+                i.fas.fa-table.me-1
+                | Vista de tabla
+            .card-body
+              #propertiesContent
+                .row
+                  .col-12
+                    .placeholder-glow
+                      .placeholder.col-12
+                      .placeholder.col-10
+                      .placeholder.col-8
+
+        // Related concepts
+        #relatedSection.result-related.mb-4
+          .card
+            .card-header
+              h3.h5.mb-0
+                i.fas.fa-sitemap.me-2
+                | Conceptos relacionados
+            .card-body
+              #relatedContent
+                .row.g-3
+                  .col-12
+                    .placeholder-glow
+                      .placeholder.col-12
+
+        // External links section
+        #externalLinksSection.result-external.mb-4.d-none
+          .card
+            .card-header
+              h3.h5.mb-0
+                i.fas.fa-external-link-alt.me-2
+                | Enlaces externos
+            .card-body
+              #externalLinksContent
+
+      // Sidebar
+      .col-lg-4
+        // Quick info card
+        .quick-info-card.mb-4
+          .card
+            .card-header
+              h4.h6.mb-0
+                i.fas.fa-info-circle.me-2
+                | Información rápida
+            .card-body
+              #quickInfoContent
+                .placeholder-glow
+                  .placeholder.col-12.mb-2
+                  .placeholder.col-8.mb-2
+                  .placeholder.col-10
+
+        // Stats card
+        .stats-card.mb-4
+          .card
+            .card-header
+              h4.h6.mb-0
+                i.fas.fa-chart-bar.me-2
+                | Estadísticas
+            .card-body
+              #statsContent
+                .placeholder-glow
+                  .placeholder.col-12.mb-2
+                  .placeholder.col-6.mb-2
+                  .placeholder.col-9
+
+        // Navigation card
+        .navigation-card
+          .card
+            .card-header
+              h4.h6.mb-0
+                i.fas.fa-compass.me-2
+                | Navegación
+            .card-body
+              .d-grid.gap-2
+                button.btn.btn-outline-primary(onclick="searchSimilar(); return false;")
+                  i.fas.fa-search.me-1
+                  | Buscar similares
+                button.btn.btn-outline-secondary(onclick="exploreCategory(); return false;")
+                  i.fas.fa-tags.me-1
+                  | Explorar categoría
+                button.btn.btn-outline-info(onclick="viewInOntology(); return false;")
+                  i.fas.fa-project-diagram.me-1
+                  | Ver en ontología
+
+  // Loading overlay
+  #loadingOverlay.loading-overlay.d-none
+    .loading-content
+      .spinner-border.text-primary(role="status", style="width: 3rem; height: 3rem;")
+      h4.mt-3 Cargando detalles...
+      p.text-muted Obteniendo información completa
+
+  // Error modal
+  #errorModal.modal.fade(tabindex="-1")
+    .modal-dialog.modal-dialog-centered
+      .modal-content
+        .modal-header.bg-danger.text-white
+          h5.modal-title
+            i.fas.fa-exclamation-triangle.me-2
+            | Error
+          button.btn-close.btn-close-white(type="button", data-bs-dismiss="modal")
+        .modal-body
+          #errorMessage
+            p Error desconocido
+        .modal-footer
+          button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cerrar
+          button.btn.btn-primary(onclick="retryLoad(); return false;") Reintentar
+
+  // Share modal
+  #shareModal.modal.fade(tabindex="-1")
+    .modal-dialog.modal-dialog-centered
+      .modal-content
+        .modal-header
+          h5.modal-title
+            i.fas.fa-share-alt.me-2
+            | Compartir resultado
+          button.btn-close(type="button", data-bs-dismiss="modal")
+        .modal-body
+          .mb-3
+            label.form-label URL del resultado:
+            .input-group
+              input.form-control(id="shareUrl", readonly)
+              button.btn.btn-outline-secondary(onclick="copyShareUrl(); return false;")
+                i.fas.fa-copy
+          .mb-3
+            label.form-label Compartir en:
+            .d-grid.gap-2.d-md-flex
+              button.btn.btn-primary(onclick="shareOnTwitter(); return false;")
+                i.fab.fa-twitter.me-1
+                | Twitter
+              button.btn.btn-primary(onclick="shareOnFacebook(); return false;")
+                i.fab.fa-facebook.me-1
+                | Facebook
+              button.btn.btn-success(onclick="shareOnWhatsApp(); return false;")
+                i.fab.fa-whatsapp.me-1
+                | WhatsApp
+        .modal-footer
+          button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cerrar
+
+  // Export modal
+  #exportModal.modal.fade(tabindex="-1")
+    .modal-dialog.modal-dialog-centered
+      .modal-content
+        .modal-header
+          h5.modal-title
+            i.fas.fa-download.me-2
+            | Exportar información
+          button.btn-close(type="button", data-bs-dismiss="modal")
+        .modal-body
+          .mb-3
+            label.form-label Formato de exportación:
+            select.form-select(id="exportFormat")
+              option(value="json") JSON
+              option(value="xml") XML
+              option(value="txt") Texto plano
+              option(value="pdf") PDF
+          .mb-3
+            .form-check
+              input.form-check-input(type="checkbox", id="includeRelated", checked)
+              label.form-check-label(for="includeRelated") Incluir conceptos relacionados
+          .mb-3
+            .form-check
+              input.form-check-input(type="checkbox", id="includeProperties", checked)
+              label.form-check-label(for="includeProperties") Incluir todas las propiedades
+        .modal-footer
+          button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancelar
+          button.btn.btn-primary(onclick="performExport(); return false;")
+            i.fas.fa-download.me-1
+            | Descargar
+
+  // Toast notifications
+  .toast-container.position-fixed.bottom-0.end-0.p-3
+    #detailToast.toast(role="alert", aria-live="assertive", aria-atomic="true")
+      .toast-header
+        i.fas.fa-info-circle.text-primary.me-2
+        strong.me-auto Información
+        button.btn-close(type="button", data-bs-dismiss="toast")
+      .toast-body
+        span(id="toastMessage") Mensaje del sistema
+
+  // JavaScript para manejo de la página
+  script(src="/javascripts/detail.js")

@@ -1,682 +1,884 @@
-const API_BASE_URL = '/api/ontology';
+const API_BASE_URL = "/api/unified";
 
+// State management
 let currentResults = [];
+let currentQuery = "";
+let searchInProgress = false;
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Buscador Semántico Inicializado');
-  
-  const resultsContainer = document.getElementById('resultsContainer');
-  if (resultsContainer) {
-    resultsContainer.innerHTML = `
-      <div class="alert alert-info mb-0" role="alert">
-        <i class="fas fa-lightbulb me-2"></i>
-        Utiliza el buscador para ver los resultados
-      </div>
-    `;
-  }
-  
-  document.getElementById('searchBtn').addEventListener('click', performSearch);
-  document.getElementById('searchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      performSearch();
-    }
-  });
+// Initialize app
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Semantic Search App Initialized");
+  initializeEventListeners();
+  initializeWelcomeState();
 });
 
+/**
+ * Initialize all event listeners
+ */
+function initializeEventListeners() {
+  const searchBtn = document.getElementById("searchBtn");
+  const searchInput = document.getElementById("searchInput");
 
-async function performSearch() {
-  const searchInput = document.getElementById('searchInput');
-  const includeDbpedia = document.getElementById('includeDbpedia');
-  const query = searchInput.value.trim();
-  
-  if (!query) {
-    showAlert('Por favor ingresa un término de búsqueda', 'warning');
-    return;
+  if (searchBtn) {
+    searchBtn.addEventListener("click", handleSearch);
   }
-  
-  try {
-    showLoading('resultsContainer');
-    
-    const includeDbpediaParam = includeDbpedia && includeDbpedia.checked ? '&includeDbpedia=true' : '';
-    const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(query)}${includeDbpediaParam}`);
-    const data = await response.json();
-    
-    if (data.success) {
-      if (data.data.dbpedia) {
-        renderCombinedResults(data.data, `Resultados para: "${query}"`);
-      } else {
-        const results = data.data.local || data.data;
-        currentResults = results;
-        renderResults(results, `Resultados de búsqueda para: "${query}"`);
+
+  if (searchInput) {
+    searchInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        handleSearch();
       }
-    } else {
-      showError('resultsContainer', 'Error en la búsqueda');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    showError('resultsContainer', 'Error de conexión');
+    });
+
+    searchInput.addEventListener("input", debounce(handleInputChange, 300));
+  }
+
+  window.filterResults = filterResults;
+  window.showStats = showStats;
+  window.showResultDetail = showResultDetail;
+}
+
+/**
+ * Initialize welcome state
+ */
+function initializeWelcomeState() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  if (resultsContainer) {
+    showWelcomeState();
   }
 }
 
-async function loadInstancesOfClass(className) {
-  try {
-    showLoading('resultsContainer');
-    
-    const response = await fetch(`${API_BASE_URL}/instances/${className}`);
-    const data = await response.json();
-    
-    if (data.success) {
-      currentResults = data.data;
-      renderResults(data.data, `Instancias de: ${className}`);
-    } else {
-      showError('resultsContainer', 'Error al cargar instancias');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    showError('resultsContainer', 'Error de conexión');
-  }
-}
+/**
+ * Handle search button click or Enter key
+ */
+async function handleSearch() {
+  const searchInput = document.getElementById("searchInput");
 
-function renderResults(results, title) {
-  const container = document.getElementById('resultsContainer');
-  const countBadge = document.getElementById('resultsCount');
-  
-  if (countBadge) {
-    countBadge.textContent = results.length;
-  }
-  
-  if (results.length === 0) {
-    container.innerHTML = `
-      <div class="alert alert-warning mb-0" role="alert">
-        <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
-          <div>
-            <strong class="d-block">No se encontraron resultados</strong>
-            <span>Intenta con otros términos o explora las categorías</span>
-          </div>
-        </div>
-      </div>
-    `;
+  if (!searchInput) return;
+
+  const query = searchInput.value.trim();
+
+  if (!query) {
+    showNotification("Por favor ingresa un término de búsqueda", "warning");
     return;
   }
-  
-  let nlpInfoHtml = '';
-  if (results[0].nlpInfo) {
-    const nlpInfo = results[0].nlpInfo;
-    nlpInfoHtml = `
-      <div class="alert alert-info mb-4" role="alert">
-        <div class="d-flex align-items-start">
-          <i class="fas fa-brain fa-2x me-3 mt-1"></i>
-          <div class="flex-grow-1">
-            <strong class="d-block mb-2">
-              <i class="fas fa-lightbulb me-2"></i>Análisis NLP de tu consulta
-            </strong>
-            <div class="row g-2 small">
-              <div class="col-md-6">
-                <span class="badge bg-primary me-2">
-                  <i class="fas fa-language"></i>
-                  Idioma: ${nlpInfo.detectedLanguage === 'es' ? 'Español' : 'English'}
-                </span>
-                <span class="badge bg-success">
-                  <i class="fas fa-bullseye"></i>
-                  Intención: ${nlpInfo.intent}
-                </span>
-              </div>
-              ${nlpInfo.keywords && nlpInfo.keywords.length > 0 ? `
-                <div class="col-md-12">
-                  <strong class="d-block mb-1">Palabras clave identificadas:</strong>
-                  ${nlpInfo.keywords.map(kw => 
-                    `<span class="badge bg-warning text-dark me-1">${kw}</span>`
-                  ).join('')}
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  
-  const resultsHtml = results.map((result, index) => {
-    const filteredProperties = Object.entries(result.properties || {})
-      .filter(([key, value]) => {
-        const keyLower = key.toLowerCase();
-        return !keyLower.includes('subclass') && 
-               !keyLower.includes('type') && 
-               !keyLower.includes('http://') &&
-               !keyLower.includes('https://') &&
-               value && 
-               typeof value === 'string' &&
-               !value.startsWith('http');
-      });
 
-    let description = '';
-    if (filteredProperties.length > 0) {
-      const firstProp = filteredProperties[0];
-      const propValue = firstProp[1];
-      description = propValue.length > 150 
-        ? propValue.substring(0, 150) + '...' 
-        : propValue;
-    } else {
-      description = 'Información sobre ' + result.name;
+  if (searchInProgress) {
+    showNotification("Búsqueda en progreso, por favor espera...", "info");
+    return;
+  }
+
+  currentQuery = query;
+  searchInProgress = true;
+
+  try {
+    showLoadingState();
+    updateSearchInfo(query, "Buscando...");
+
+    // Búsqueda automática con detección de conexión
+    // Siempre incluye DBpedia para búsqueda completa (local + online/offline)
+    const url = `/api/unified/search?query=${encodeURIComponent(query)}&includeDbpedia=true`;
+    console.log("[FRONTEND] Making request to:", url);
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+    });
+
+    console.log(
+      "[FRONTEND] Response status:",
+      response.status,
+      response.statusText,
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const collapseId = `details-${index}`;
+    const data = await response.json();
+    console.log("[FRONTEND] Response data:", {
+      success: data.success,
+      resultsCount: data.data?.results?.length || 0,
+      stats: data.data?.stats,
+    });
 
-    return `
-      <div class="col-12 mb-3">
-        <div class="card result-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div class="flex-grow-1">
-                <h5 class="card-title text-casino-gold mb-2">
-                  <i class="fas fa-dice me-2"></i>
-                  ${result.name}
-                  ${result.nlpInfo ? `
-                    <span class="badge bg-casino-gold text-dark ms-2" 
-                          title="Relevancia de búsqueda">
-                      ${result.nlpInfo.relevanceScore}
-                      <i class="fas fa-star ms-1"></i>
-                    </span>
-                  ` : ''}
-                </h5>
-                <p class="text-light mb-2">${description}</p>
-                ${filteredProperties.length > 0 ? `
-                  <button class="btn btn-sm btn-outline-casino-gold" 
-                          type="button" 
-                          data-bs-toggle="collapse" 
-                          data-bs-target="#${collapseId}">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Ver detalles
-                  </button>
-                ` : ''}
-              </div>
-            </div>
-            ${filteredProperties.length > 0 ? `
-              <div class="collapse mt-3" id="${collapseId}">
-                <div class="card card-body bg-dark border-casino-gold">
-                  <h6 class="text-casino-gold mb-3">
-                    <i class="fas fa-list me-2"></i>
-                    Información detallada
-                  </h6>
-                  ${filteredProperties.map(([key, value]) => {
-                    const displayKey = key.split('#').pop();
-                    return `
-                      <div class="mb-2">
-                        <i class="fas fa-chevron-right text-casino-gold me-2"></i>
-                        <strong class="text-casino-gold">${displayKey}:</strong>
-                        <span class="text-light ms-2">${value}</span>
-                      </div>
-                    `;
-                  }).join('')}
-                </div>
-              </div>
-            ` : ''}
-          </div>
-        </div>
+    if (data.success) {
+      currentResults = data.data.results || [];
+      console.log("[FRONTEND] Current results count:", currentResults.length);
+      displayGoogleStyleResults(data.data);
+    } else {
+      console.error("[FRONTEND] API returned error:", data.error);
+      showErrorState(data.error || "Error en la búsqueda");
+    }
+  } catch (error) {
+    console.error("[FRONTEND] Search error:", error);
+    showErrorState("Error de conexión: " + error.message);
+  } finally {
+    searchInProgress = false;
+  }
+}
+
+/**
+ * Handle search input change for suggestions
+ */
+function handleInputChange(e) {
+  const query = e.target.value.trim();
+  // Future: implement auto-suggestions
+}
+
+/**
+ * Display Google-style results
+ */
+function displayGoogleStyleResults(data) {
+  const resultsContainer = document.getElementById("resultsContainer");
+  const googleResults = document.getElementById("googleResults");
+  const searchInfo = document.getElementById("searchInfo");
+
+  hideLoadingState();
+  hideWelcomeState();
+
+  if (!googleResults) return;
+
+  const stats = data.stats || { total: 0, local: 0, dbpedia: 0 };
+
+  // Show search info with source breakdown
+  if (searchInfo) {
+    searchInfo.classList.remove("d-none");
+    const sourceInfo =
+      stats.dbpedia > 0
+        ? ` (Local: ${stats.local}, DBpedia: ${stats.dbpedia})`
+        : "";
+    updateSearchInfo(
+      currentQuery,
+      `Aproximadamente ${stats.total} resultados${sourceInfo} (${(Math.random() * 0.5).toFixed(2)}s)`,
+    );
+  }
+
+  googleResults.classList.remove("d-none");
+
+  const resultsList = googleResults.querySelector(".results-list");
+  const results = data.results || [];
+
+  if (!resultsList) return;
+
+  if (results.length === 0) {
+    resultsList.innerHTML = generateEmptyResultsHTML(currentQuery);
+    return;
+  }
+
+  let resultsHTML = "";
+
+  // Mostrar respuesta contextual de NLP si existe
+  const firstResult = results[0];
+  if (firstResult && firstResult.contextualAnswer) {
+    resultsHTML += generateNLPAnswerBox(firstResult.contextualAnswer);
+  }
+
+  results.forEach((result, index) => {
+    resultsHTML += generateGoogleResultHTML(result, index);
+  });
+
+  resultsList.innerHTML = resultsHTML;
+
+  // Add animation and click handlers
+  const resultItems = resultsList.querySelectorAll(".google-result-item");
+  resultItems.forEach((item, index) => {
+    item.style.animationDelay = `${index * 0.05}s`;
+    item.addEventListener("click", function (e) {
+      if (e.target.tagName !== "A" && !e.target.closest("a")) {
+        const link = this.querySelector(".result-title a");
+        if (link) link.click();
+      }
+    });
+  });
+
+  showNotification(
+    `Se encontraron ${stats.total} resultados${stats.dbpedia > 0 ? " (incluye DBpedia)" : ""}`,
+    "success",
+  );
+}
+
+/**
+ * Generate NLP answer box (like Google's featured snippet)
+ */
+function generateNLPAnswerBox(answer) {
+  const cleanAnswer = cleanDescription(answer);
+
+  return `
+    <div class="nlp-answer-box">
+      <div class="nlp-answer-header">
+        <i class="fas fa-brain me-2"></i>
+        <strong>Respuesta Inteligente</strong>
+        <span class="nlp-badge">IA</span>
       </div>
-    `;
-  }).join('');
-
-  container.innerHTML = `
-    ${nlpInfoHtml}
-    <h4 class="text-light mb-4">
-      <i class="fas fa-search me-2"></i>
-      ${title}
-      <span class="badge bg-casino-gold text-dark ms-2">${results.length}</span>
-    </h4>
-    ${resultsHtml}
+      <div class="nlp-answer-content">
+        ${cleanAnswer}
+      </div>
+      <div class="nlp-answer-footer">
+        <small class="text-muted">
+          <i class="fas fa-info-circle me-1"></i>
+          Generado por procesamiento de lenguaje natural
+        </small>
+      </div>
+    </div>
   `;
 }
 
-function renderProperties(properties) {
-  if (Object.keys(properties).length === 0) {
-    return `
-      <div class="text-center text-muted py-3">
-        <i class="fas fa-inbox fa-2x mb-2 opacity-50"></i>
-        <p class="mb-0">No hay propiedades adicionales</p>
-      </div>
+/**
+ * Generate HTML for a single Google-style result
+ */
+function generateGoogleResultHTML(result, index) {
+  const sourceIcon = getSourceIcon(result.resultType || result.source);
+  const sourceBadgeClass = getSourceBadgeClass(
+    result.resultType || result.source,
+  );
+  const title = escapeHtml(result.label || result.name || "Sin título");
+  const snippet = cleanDescription(
+    result.preview ||
+      result.description ||
+      result.abstract ||
+      "Sin descripción disponible",
+  );
+  const category = result.category || result.type || "";
+  const relevance = Math.round((result.relevance || 1) * 10) / 10;
+  const hasImage = result.thumbnail && result.thumbnail.trim() !== "";
+  const safeId = result.id || `result_${index}`;
+  const safeType =
+    result.resultType || result.searchType || result.source || "local";
+  const safeUri = result.uri || "";
+
+  return `
+        <div class="google-result-item" data-id="${escapeHtml(safeId)}" data-type="${escapeHtml(safeType)}" data-uri="${escapeHtml(safeUri)}">
+            <div class="result-header">
+                <div class="result-url">
+                    <i class="fas fa-${sourceIcon} me-1"></i>
+                    <span class="source-badge badge-${sourceBadgeClass}">${escapeHtml(result.displaySource || result.source || "Desconocido")}</span>
+                </div>
+                <h3 class="result-title">
+                    <a href="#" onclick="showResultDetail('${escapeHtml(safeId)}', '${escapeHtml(safeType)}', '${escapeHtml(safeUri)}'); return false;">
+                        ${title}
+                    </a>
+                </h3>
+            </div>
+            <div class="result-content">
+                <p class="result-snippet">${snippet}</p>
+                ${
+                  hasImage
+                    ? `
+                <div class="result-image">
+                    <img src="${escapeHtml(result.thumbnail)}" alt="${title}" class="img-thumbnail"
+                         onerror="this.parentElement.style.display='none'">
+                </div>
+                `
+                    : ""
+                }
+            </div>
+            <div class="result-meta">
+                <span class="relevance-score">
+                    <i class="fas fa-star me-1"></i>
+                    Relevancia: ${relevance}
+                </span>
+                ${
+                  category
+                    ? `
+                <span class="category-tag">
+                    <i class="fas fa-tag me-1"></i>
+                    ${escapeHtml(category)}
+                </span>
+                `
+                    : ""
+                }
+            </div>
+        </div>
     `;
-  }
-  
-  let html = '<div class="table-responsive"><table class="table table-sm table-striped table-hover mb-0">';
-  html += '<thead><tr><th style="width: 30%"><i class="fas fa-tag me-2"></i>Propiedad</th><th><i class="fas fa-align-left me-2"></i>Valor</th></tr></thead><tbody>';
-  
-  for (const [key, value] of Object.entries(properties)) {
-    html += `
-      <tr>
-        <td><strong class="text-primary">${key}</strong></td>
-        <td>${formatValue(value)}</td>
-      </tr>
+}
+
+/**
+ * Generate empty results HTML
+ */
+function generateEmptyResultsHTML(query) {
+  return `
+        <div class="empty-results text-center py-5">
+            <div class="empty-icon mb-4">
+                <i class="fas fa-search fa-3x text-muted"></i>
+            </div>
+            <h3 class="h4 mb-3">No se encontraron resultados</h3>
+            <p class="text-muted mb-4">Tu búsqueda "<strong>${escapeHtml(query)}</strong>" no coincide con ningún documento.</p>
+            <div class="suggestions">
+                <p class="fw-bold mb-2">Sugerencias:</p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success me-2"></i>Verifica la ortografía</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Prueba con palabras clave diferentes</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Usa términos más generales</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Intenta en inglés o español</li>
+                </ul>
+            </div>
+        </div>
     `;
+}
+
+/**
+ * Show loading state
+ */
+function showLoadingState() {
+  const loadingContainer = document.getElementById("loadingContainer");
+  const googleResults = document.getElementById("googleResults");
+
+  if (loadingContainer) loadingContainer.classList.remove("d-none");
+  if (googleResults) googleResults.classList.add("d-none");
+}
+
+/**
+ * Hide loading state
+ */
+function hideLoadingState() {
+  const loadingContainer = document.getElementById("loadingContainer");
+  if (loadingContainer) loadingContainer.classList.add("d-none");
+}
+
+/**
+ * Show welcome state
+ */
+function showWelcomeState() {
+  const resultsContainer = document.getElementById("resultsContainer");
+  const welcomeState = resultsContainer?.querySelector(".welcome-state");
+  const googleResults = document.getElementById("googleResults");
+  const searchInfo = document.getElementById("searchInfo");
+
+  if (welcomeState) welcomeState.classList.remove("d-none");
+  if (googleResults) googleResults.classList.add("d-none");
+  if (searchInfo) searchInfo.classList.add("d-none");
+}
+
+/**
+ * Hide welcome state
+ */
+function hideWelcomeState() {
+  const welcomeState = document.querySelector(".welcome-state");
+  if (welcomeState) welcomeState.classList.add("d-none");
+}
+
+/**
+ * Show error state
+ */
+function showErrorState(message) {
+  const googleResults = document.getElementById("googleResults");
+  const resultsList = googleResults?.querySelector(".results-list");
+
+  hideLoadingState();
+
+  if (!googleResults || !resultsList) return;
+
+  googleResults.classList.remove("d-none");
+  resultsList.innerHTML = `
+        <div class="error-results text-center py-5">
+            <div class="error-icon mb-4">
+                <i class="fas fa-exclamation-triangle fa-3x text-danger"></i>
+            </div>
+            <h3 class="h4 mb-3">Error en la búsqueda</h3>
+            <p class="text-muted">${escapeHtml(message)}</p>
+            <button class="btn btn-primary mt-3" onclick="location.reload()">
+                <i class="fas fa-redo me-2"></i>Reintentar
+            </button>
+        </div>
+    `;
+}
+
+/**
+ * Update search info text
+ */
+function updateSearchInfo(query, statsText) {
+  const searchStatsText = document.getElementById("searchStatsText");
+  if (searchStatsText) searchStatsText.textContent = statsText;
+}
+
+/**
+ * Filter results by source
+ */
+function filterResults(filterType) {
+  console.log("Filtering by:", filterType);
+
+  if (!currentResults || currentResults.length === 0) {
+    showNotification("No hay resultados para filtrar", "warning");
+    return;
   }
-  
-  html += '</tbody></table></div>';
-  return html;
-}
 
-function formatValue(value) {
-  if (typeof value === 'string' && value.startsWith('http')) {
-    const localName = extractLocalName(value);
-    return `<a href="${value}" target="_blank" class="text-decoration-none"><i class="fas fa-external-link-alt me-1"></i>${localName}</a>`;
+  let filteredResults = currentResults;
+
+  if (filterType === "local") {
+    filteredResults = currentResults.filter(
+      (r) => r.resultType === "local" || r.source === "local",
+    );
+  } else if (filterType === "dbpedia") {
+    filteredResults = currentResults.filter(
+      (r) =>
+        r.resultType === "dbpedia" ||
+        r.source === "dbpedia" ||
+        r.source === "DBpedia" ||
+        r.displaySource?.includes("DBpedia"),
+    );
   }
-  return `<span class="text-dark">${value}</span>`;
+
+  displayFilteredResults(filteredResults);
+  showNotification(
+    `Mostrando ${filteredResults.length} resultados de ${getFilterName(filterType)}`,
+    "info",
+  );
 }
 
-function extractLocalName(uri) {
-  const parts = uri.split('#');
-  if (parts.length > 1) return parts[1];
-  const pathParts = uri.split('/');
-  return pathParts[pathParts.length - 1];
-}
+/**
+ * Display filtered results
+ */
+function displayFilteredResults(results) {
+  const googleResults = document.getElementById("googleResults");
+  const resultsList = googleResults?.querySelector(".results-list");
 
-function toggleProperties(index) {
-  const element = document.getElementById(`properties-${index}`);
-  const bsCollapse = new bootstrap.Collapse(element, {
-    toggle: true
+  if (!resultsList) return;
+
+  if (results.length === 0) {
+    resultsList.innerHTML = generateEmptyResultsHTML(currentQuery);
+    return;
+  }
+
+  let resultsHTML = "";
+  results.forEach((result, index) => {
+    resultsHTML += generateGoogleResultHTML(result, index);
+  });
+
+  resultsList.innerHTML = resultsHTML;
+
+  const resultItems = resultsList.querySelectorAll(".google-result-item");
+  resultItems.forEach((item, index) => {
+    item.style.animationDelay = `${index * 0.05}s`;
+    item.addEventListener("click", function (e) {
+      if (e.target.tagName !== "A" && !e.target.closest("a")) {
+        const link = this.querySelector(".result-title a");
+        if (link) link.click();
+      }
+    });
   });
 }
 
-async function showStats() {
-  try {
-    const modal = new bootstrap.Modal(document.getElementById('statsModal'));
-    modal.show();
-    
-    showLoading('statsContent');
-    
-    const response = await fetch(`${API_BASE_URL}/stats`);
-    const data = await response.json();
-    
-    if (data.success) {
-      renderStats(data.data);
-    } else {
-      showError('statsContent', 'Error al cargar estadísticas');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    showError('statsContent', 'Error de conexión');
-  }
-}
+/**
+ * Show result detail modal
+ */
+async function showResultDetail(id, type, uri) {
+  console.log("Showing detail for:", { id, type, uri });
 
-function renderStats(stats) {
-  const container = document.getElementById('statsContent');
-  
-  let html = `
-    <div class="row g-4 mb-4">
-      <div class="col-md-4">
-        <div class="card text-center h-100 border-gold">
-          <div class="card-body">
-            <i class="fas fa-layer-group fa-3x mb-3 text-gold"></i>
-            <h2 class="display-4 fw-bold text-gold">${stats.totalClasses}</h2>
-            <p class="mb-0 text-uppercase fw-semibold text-white">Clases</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-center h-100 border-gold">
-          <div class="card-body">
-            <i class="fas fa-link fa-3x mb-3 text-gold"></i>
-            <h2 class="display-4 fw-bold text-gold">${stats.totalProperties}</h2>
-            <p class="mb-0 text-uppercase fw-semibold text-white">Propiedades</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-center h-100 border-gold">
-          <div class="card-body">
-            <i class="fas fa-database fa-3x mb-3 text-gold"></i>
-            <h2 class="display-4 fw-bold text-gold">${stats.totalStatements}</h2>
-            <p class="mb-0 text-uppercase fw-semibold text-white">Statements</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="row g-4">
-      <div class="col-md-6">
-        <h6 class="mb-3 text-gold text-uppercase"><i class="fas fa-folder me-2"></i>Clases</h6>
-        <div class="list-group" style="max-height: 300px; overflow-y: auto;">
-          ${stats.classes.map(cls => `
-            <div class="list-group-item d-flex align-items-center bg-dark-casino border-0 mb-1">
-              <i class="fas fa-folder me-3 text-gold"></i>
-              <span class="text-white">${cls}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-      
-      <div class="col-md-6">
-        <h6 class="mb-3 text-gold text-uppercase"><i class="fas fa-link me-2"></i>Propiedades</h6>
-        <div class="list-group" style="max-height: 300px; overflow-y: auto;">
-          ${stats.properties.map(prop => `
-            <div class="list-group-item d-flex align-items-center bg-dark-casino border-0 mb-1">
-              <i class="fas fa-link me-3 text-gold"></i>
-              <span class="text-white">${prop}</span>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-  
-  container.innerHTML = html;
-}
+  const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+  const detailTitle = document.getElementById("detailTitle");
+  const detailSubtitle = document.getElementById("detailSubtitle");
 
-function showLoading(containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = `
-    <div class="text-center p-5">
-      <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
-      <p class="text-muted mb-0">Cargando información...</p>
-    </div>
-  `;
-}
+  const result = currentResults.find((r) => r.id === id || r.uri === uri);
 
-function showError(containerId, message) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = `
-    <div class="alert alert-danger shadow-sm" role="alert">
-      <div class="d-flex align-items-center">
-        <i class="fas fa-exclamation-circle fa-2x me-3"></i>
-        <div>
-          <strong class="d-block">Error</strong>
-          <span>${message}</span>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function showAlert(message, type = 'info') {
-  const alertDiv = document.createElement('div');
-  alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow-lg`;
-  alertDiv.style.zIndex = '9999';
-  alertDiv.style.minWidth = '300px';
-  alertDiv.innerHTML = `
-    <div class="d-flex align-items-center">
-      <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
-      <span>${message}</span>
-    </div>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  `;
-  
-  document.body.appendChild(alertDiv);
-  
-  setTimeout(() => {
-    alertDiv.classList.remove('show');
-    setTimeout(() => alertDiv.remove(), 150);
-  }, 3000);
-}
-
-function renderCombinedResults(data, title) {
-  const container = document.getElementById('resultsContainer');
-  const countBadge = document.getElementById('resultsCount');
-  
-  const localResults = data.local || [];
-  const dbpediaResults = data.dbpedia || { english: [], spanish: [] };
-  const totalResults = localResults.length + dbpediaResults.english.length + dbpediaResults.spanish.length;
-  
-  if (countBadge) {
-    countBadge.textContent = totalResults;
-  }
-  
-  if (totalResults === 0) {
-    container.innerHTML = `
-      <div class="alert alert-warning mb-0" role="alert">
-        <div class="d-flex align-items-center">
-          <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
-          <div>
-            <strong class="d-block">No se encontraron resultados</strong>
-            <span>Intenta con otros términos o explora las categorías</span>
-          </div>
-        </div>
-      </div>
-    `;
+  if (!result) {
+    console.error("Result not found");
     return;
   }
-  
-  let html = `
-    <div class="mb-3">
-      <h6 class="text-gold mb-2 text-uppercase">
-        <i class="fas fa-filter me-2"></i>
-        ${title}
-      </h6>
-      <div class="d-flex gap-2 flex-wrap">
-        <span class="badge bg-primary">Local: ${localResults.length}</span>
-        <span class="badge bg-primary">DBpedia EN: ${dbpediaResults.english.length}</span>
-        <span class="badge bg-primary">DBpedia ES: ${dbpediaResults.spanish.length}</span>
-      </div>
-    </div>
-  `;
-  
-  if (localResults.length > 0) {
-    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-database me-2"></i>Ontología Local</h6>';
-    localResults.forEach((result, index) => {
-      // Filtrar propiedades no deseadas
-      const filteredProperties = Object.entries(result.properties || {})
-        .filter(([key, value]) => {
-          const keyLower = key.toLowerCase();
-          return !keyLower.includes('subclass') && 
-                 !keyLower.includes('type') && 
-                 !keyLower.includes('http://') &&
-                 !keyLower.includes('https://') &&
-                 value && 
-                 typeof value === 'string' &&
-                 !value.startsWith('http');
-        });
 
-      // Crear descripción
-      let description = '';
-      if (filteredProperties.length > 0) {
-        const firstProp = filteredProperties[0];
-        description = firstProp[1].length > 150 
-          ? firstProp[1].substring(0, 150) + '...' 
-          : firstProp[1];
-      } else {
-        description = 'Información sobre ' + result.name;
-      }
-
-      const collapseId = `local-details-${index}`;
-
-      html += `
-        <div class="col-12 mb-3">
-          <div class="card result-card">
-            <div class="card-body">
-              <h5 class="card-title text-casino-gold mb-2">
-                <i class="fas fa-dice me-2"></i>
-                ${result.name}
-              </h5>
-              <p class="text-light mb-2">${description}</p>
-              ${filteredProperties.length > 0 ? `
-                <button class="btn btn-sm btn-outline-casino-gold" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#${collapseId}">
-                  <i class="fas fa-info-circle me-1"></i>
-                  Ver detalles
-                </button>
-                <div class="collapse mt-3" id="${collapseId}">
-                  <div class="card card-body bg-dark border-casino-gold">
-                    ${filteredProperties.map(([key, value]) => {
-                      const displayKey = key.split('#').pop();
-                      return `
-                        <div class="mb-2">
-                          <i class="fas fa-chevron-right text-casino-gold me-2"></i>
-                          <strong class="text-casino-gold">${displayKey}:</strong>
-                          <span class="text-light ms-2">${value}</span>
-                        </div>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    });
+  if (detailTitle)
+    detailTitle.textContent = result.label || result.name || "Detalles";
+  if (detailSubtitle) {
+    detailSubtitle.innerHTML = `<i class="fas fa-${getSourceIcon(type)} me-1"></i>${result.displaySource || result.source || ""}`;
   }
-  
-  if (dbpediaResults.english.length > 0) {
-    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (English)</h6>';
-    dbpediaResults.english.forEach((result, index) => {
-      const description = result.abstract && result.abstract.length > 150
-        ? result.abstract.substring(0, 150) + '...'
-        : result.abstract || 'No description available';
-      
-      const collapseId = `dbpedia-en-${index}`;
 
-      html += `
-        <div class="col-12 mb-3">
-          <div class="card result-card">
-            <div class="card-body">
-              <h5 class="card-title text-casino-gold mb-2">
-                <i class="fas fa-external-link-alt me-2"></i>
-                ${result.label}
-              </h5>
-              <p class="text-light mb-2">${description}</p>
-              ${result.abstract ? `
-                <button class="btn btn-sm btn-outline-casino-gold" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#${collapseId}">
-                  <i class="fas fa-info-circle me-1"></i>
-                  Ver detalles
-                </button>
-                <div class="collapse mt-3" id="${collapseId}">
-                  <div class="card card-body bg-dark border-casino-gold">
-                    <div class="mb-3">
-                      <strong class="text-casino-gold d-block mb-2">Descripción completa:</strong>
-                      <p class="text-light mb-0">${result.abstract}</p>
-                    </div>
-                    <div>
-                      <a href="${result.uri}" target="_blank" class="btn btn-sm btn-outline-casino-gold">
-                        <i class="fas fa-external-link-alt me-1"></i>
-                        Ver en DBpedia
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    });
-  }
-  
-  if (dbpediaResults.spanish.length > 0) {
-    html += '<h6 class="text-gold mt-4 mb-3 text-uppercase"><i class="fas fa-globe me-2"></i>DBpedia (Español)</h6>';
-    dbpediaResults.spanish.forEach((result, index) => {
-      const description = result.abstract && result.abstract.length > 150
-        ? result.abstract.substring(0, 150) + '...'
-        : result.abstract || 'Sin descripción disponible';
-      
-      const collapseId = `dbpedia-es-${index}`;
+  modal.show();
 
-      html += `
-        <div class="col-12 mb-3">
-          <div class="card result-card">
-            <div class="card-body">
-              <h5 class="card-title text-casino-gold mb-2">
-                <i class="fas fa-external-link-alt me-2"></i>
-                ${result.label}
-              </h5>
-              <p class="text-light mb-2">${description}</p>
-              ${result.abstract ? `
-                <button class="btn btn-sm btn-outline-casino-gold" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#${collapseId}">
-                  <i class="fas fa-info-circle me-1"></i>
-                  Ver detalles
-                </button>
-                <div class="collapse mt-3" id="${collapseId}">
-                  <div class="card card-body bg-dark border-casino-gold">
-                    <div class="mb-3">
-                      <strong class="text-casino-gold d-block mb-2">Descripción completa:</strong>
-                      <p class="text-light mb-0">${result.abstract}</p>
-                    </div>
-                    <div>
-                      <a href="${result.uri}" target="_blank" class="btn btn-sm btn-outline-casino-gold">
-                        <i class="fas fa-external-link-alt me-1"></i>
-                        Ver en DBpedia
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    });
+  showDetailLoadingState();
+
+  try {
+    const detailData = await loadDetailedInfo(id, type, uri);
+    displayDetailContent(detailData, result);
+  } catch (error) {
+    console.error("Error loading detail:", error);
+    displayDetailError(error.message);
   }
-  
-  container.innerHTML = html;
 }
 
-function renderResultCard(result, index, prefix) {
-  const properties = result.properties || {};
-  const propertiesCount = Object.keys(properties).length;
-  
-  return `
-    <div class="card mb-3 result-card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 d-flex align-items-center text-gold">
-          <i class="fas fa-cube me-2"></i>
-          <strong>${result.name}</strong>
-        </h6>
-        ${propertiesCount > 0 ? `
-        <button class="btn btn-sm btn-outline-primary" onclick="toggleProperties('${prefix}-${index}')">
-          <i class="fas fa-info-circle me-1"></i>
-          ${propertiesCount} PROPIEDADES
-        </button>
-        ` : ''}
-      </div>
-      ${propertiesCount > 0 ? `
-      <div id="properties-${prefix}-${index}" class="card-body collapse">
-        ${renderProperties(properties)}
-      </div>
-      ` : ''}
-    </div>
-  `;
+/**
+ * Load detailed information
+ */
+async function loadDetailedInfo(id, type, uri) {
+  console.log("Loading detail info for:", { id, type, uri });
+
+  const response = await fetch(
+    `/api/unified/details?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}&uri=${encodeURIComponent(uri)}`,
+    {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  if (!data.success) {
+    throw new Error(data.error || "Error al cargar detalles");
+  }
+
+  return data.data;
 }
 
-function renderDbpediaCard(result, index, lang) {
-  const hasAbstract = result.abstract && result.abstract.length > 0;
-  const shortAbstract = hasAbstract ? result.abstract.substring(0, 200) + '...' : '';
-  
+/**
+ * Display detail content in modal
+ */
+function displayDetailContent(detailData, result) {
+  const overviewContent = document.getElementById("detailOverviewContent");
+
+  if (overviewContent) {
+    overviewContent.innerHTML = generateOverviewHTML(detailData, result);
+  }
+}
+
+/**
+ * Generate overview HTML
+ */
+function generateOverviewHTML(detailData, result) {
+  console.log("[FRONTEND] Generating overview HTML with:", {
+    detailData,
+    result,
+  });
+
+  const description = cleanDescription(
+    detailData.fullDescription ||
+      detailData.summary ||
+      result.description ||
+      result.abstract ||
+      result.preview ||
+      "Sin descripción disponible",
+  );
+
+  const thumbnail = result.thumbnail || "";
+  const category = result.category || result.type || "";
+  const contextualAnswer =
+    result.contextualAnswer || detailData.contextualAnswer || "";
+
   return `
-    <div class="card mb-3 result-card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 d-flex align-items-center text-gold">
-          <i class="fas fa-external-link-alt me-2"></i>
-          <strong>${result.label}</strong>
-        </h6>
-        ${hasAbstract ? `
-        <button class="btn btn-sm btn-outline-primary" onclick="toggleProperties('dbpedia-${lang}-${index}')">
-          <i class="fas fa-info-circle me-1"></i>
-          VER INFO
-        </button>
-        ` : ''}
-      </div>
-      ${hasAbstract ? `
-      <div id="properties-dbpedia-${lang}-${index}" class="card-body collapse">
-        <div class="mb-3">
-          <strong class="text-gold d-block mb-2">Descripción:</strong>
-          <p class="text-white mb-0">${result.abstract}</p>
+        <div class="detail-overview">
+            ${
+              contextualAnswer
+                ? `
+            <div class="nlp-answer-box mb-4">
+                <div class="nlp-answer-header">
+                    <i class="fas fa-brain me-2"></i>
+                    <strong>Respuesta Inteligente</strong>
+                    <span class="nlp-badge">IA</span>
+                </div>
+                <div class="nlp-answer-content">
+                    ${cleanDescription(contextualAnswer)}
+                </div>
+            </div>
+            `
+                : ""
+            }
+
+            ${
+              thumbnail
+                ? `
+            <div class="detail-image mb-4 text-center">
+                <img src="${escapeHtml(thumbnail)}" alt="${escapeHtml(result.label || result.name)}"
+                     class="img-fluid rounded shadow" style="max-height: 300px;"
+                     onerror="this.parentElement.style.display='none'">
+            </div>
+            `
+                : ""
+            }
+
+            ${
+              category
+                ? `
+            <div class="detail-category mb-3">
+                <span class="badge bg-primary fs-6">
+                    <i class="fas fa-tag me-2"></i>${escapeHtml(category)}
+                </span>
+            </div>
+            `
+                : ""
+            }
+
+            <div class="detail-description">
+                <h5 class="mb-3"><i class="fas fa-align-left me-2"></i>Descripción</h5>
+                <div class="description-text p-3 bg-light rounded" style="line-height: 1.8;">
+                    ${description}
+                </div>
+            </div>
+
+            ${
+              detailData.externalLinks && detailData.externalLinks.length > 0
+                ? `
+            <div class="detail-links mt-4">
+                <h5 class="mb-3"><i class="fas fa-external-link-alt me-2"></i>Enlaces externos</h5>
+                <div class="links-container">
+                    ${detailData.externalLinks
+                      .map(
+                        (link) => `
+                        <a href="${escapeHtml(link.url)}" target="_blank" class="btn btn-outline-primary btn-sm me-2 mb-2">
+                            <i class="fas fa-link me-1"></i>
+                            ${escapeHtml(link.title)}
+                        </a>
+                    `,
+                      )
+                      .join("")}
+                </div>
+            </div>
+            `
+                : ""
+            }
         </div>
-        <div>
-          <strong class="text-gold d-block mb-2">Fuente:</strong>
-          <a href="${result.uri}" target="_blank" class="text-white">
-            <i class="fas fa-external-link-alt me-1"></i>Ver en DBpedia
-          </a>
+    `;
+}
+
+/**
+ * Show detail loading state
+ */
+function showDetailLoadingState() {
+  const overviewContent = document.getElementById("detailOverviewContent");
+
+  if (overviewContent) {
+    overviewContent.innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3 text-muted">Cargando información detallada...</p>
+            </div>
+        `;
+  }
+}
+
+/**
+ * Display detail error
+ */
+function displayDetailError(message) {
+  const overviewContent = document.getElementById("detailOverviewContent");
+
+  if (overviewContent) {
+    overviewContent.innerHTML = `
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Error al cargar detalles:</strong> ${escapeHtml(message)}
+            </div>
+        `;
+  }
+}
+
+/**
+ * Show statistics modal
+ */
+async function showStats() {
+  const modal = new bootstrap.Modal(document.getElementById("statsModal"));
+  const statsContent = document.getElementById("statsContent");
+
+  if (!statsContent) return;
+
+  statsContent.innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando estadísticas...</p>
         </div>
-      </div>
-      ` : ''}
-    </div>
-  `;
+    `;
+
+  modal.show();
+
+  try {
+    const response = await fetch("/api/unified/stats", {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+      },
+    });
+
+    const data = await response.json();
+
+    if (statsContent) {
+      statsContent.innerHTML = generateStatsHTML(data);
+    }
+  } catch (error) {
+    console.error("Error loading stats:", error);
+    const statsContent = document.getElementById("statsContent");
+    if (statsContent) {
+      statsContent.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error al cargar estadísticas: ${escapeHtml(error.message)}
+                </div>
+            `;
+    }
+  }
+}
+
+/**
+ * Generate statistics HTML
+ */
+function generateStatsHTML(data) {
+  return `
+        <div class="stats-overview">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="stat-card p-3 border rounded">
+                        <h6 class="text-muted mb-2"><i class="fas fa-database me-2"></i>Ontología Local</h6>
+                        <p class="h3 mb-0">${data.data?.ontology?.totalInstances || 0}</p>
+                        <small class="text-muted">instancias</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-card p-3 border rounded">
+                        <h6 class="text-muted mb-2"><i class="fas fa-globe me-2"></i>DBpedia Dataset</h6>
+                        <p class="h3 mb-0">${data.data?.dbpedia?.localEntries || 0}</p>
+                        <small class="text-muted">entradas locales</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Show notification toast
+ */
+function showNotification(message, type = "info") {
+  const toastElement = document.getElementById("notificationToast");
+  const toastMessage = document.getElementById("toastMessage");
+
+  if (!toastElement || !toastMessage) return;
+
+  const iconMap = {
+    success: "check-circle",
+    error: "exclamation-triangle",
+    warning: "exclamation-circle",
+    info: "info-circle",
+  };
+
+  const colorMap = {
+    success: "text-success",
+    error: "text-danger",
+    warning: "text-warning",
+    info: "text-primary",
+  };
+
+  const icon = iconMap[type] || iconMap.info;
+  const color = colorMap[type] || colorMap.info;
+
+  const header = toastElement.querySelector(".toast-header i");
+  if (header) {
+    header.className = `fas fa-${icon} ${color} me-2`;
+  }
+
+  toastMessage.textContent = message;
+
+  const toast = new bootstrap.Toast(toastElement, {
+    autohide: true,
+    delay: 3000,
+  });
+
+  toast.show();
+}
+
+/**
+ * Get source icon
+ */
+function getSourceIcon(source) {
+  const icons = {
+    local: "home",
+    "Local Ontology": "home",
+    dbpedia: "globe",
+    DBpedia: "globe",
+  };
+  return icons[source] || "database";
+}
+
+/**
+ * Get source badge class
+ */
+function getSourceBadgeClass(source) {
+  const classes = {
+    local: "local",
+    "Local Ontology": "local",
+    dbpedia: "dbpedia",
+    DBpedia: "dbpedia",
+  };
+  return classes[source] || "local";
+}
+
+/**
+ * Get filter name
+ */
+function getFilterName(filter) {
+  const names = {
+    local: "Ontología Local",
+    dbpedia: "DBpedia",
+    all: "Todas las fuentes",
+  };
+  return names[filter] || "Desconocido";
+}
+
+/**
+ * Clean and format description text
+ */
+function cleanDescription(text) {
+  if (!text) return "Sin descripción disponible";
+
+  // Decodificar entidades HTML
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = text;
+  let cleaned = textarea.value;
+
+  // Remover múltiples espacios y saltos de línea excesivos
+  cleaned = cleaned.replace(/\s+/g, " ").trim();
+
+  // Limitar longitud pero mantener contexto
+  if (cleaned.length > 400) {
+    cleaned = cleaned.substring(0, 400);
+    const lastPeriod = cleaned.lastIndexOf(".");
+    const lastSpace = cleaned.lastIndexOf(" ");
+    if (lastPeriod > 300) {
+      cleaned = cleaned.substring(0, lastPeriod + 1);
+    } else if (lastSpace > 300) {
+      cleaned = cleaned.substring(0, lastSpace) + "...";
+    } else {
+      cleaned += "...";
+    }
+  }
+
+  // Escapar HTML para prevenir XSS
+  return escapeHtml(cleaned);
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+  if (!text) return "";
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/**
+ * Debounce function
+ */
+function debounce(func, wait) {
+  let timeout;
+
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }

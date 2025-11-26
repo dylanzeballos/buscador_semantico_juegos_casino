@@ -1,0 +1,437 @@
+{
+  "metadata": {
+    "created": "2024-01-01",
+    "version": "1.0",
+    "description": "Local DBpedia dataset for casino games and gambling-related content",
+    "language": "mixed",
+    "total_entries": 45,
+    "categories": ["casino_games", "card_games", "table_games", "slot_machines", "gambling_concepts"]
+  },
+  "entries": [
+    {
+      "id": "blackjack_001",
+      "uri": "http://dbpedia.org/resource/Blackjack",
+      "label": "Blackjack",
+      "abstract": "Blackjack is a comparing card game between a player and dealer. It is played with one or more decks of 52 cards. The goal is to beat the dealer's hand without going over 21.",
+      "description": "Blackjack, also known as twenty-one, is one of the most popular casino banking games in the world. Players compete against the dealer rather than against other players. The objective is to get a hand total of closer to 21 than the dealer without busting.",
+      "thumbnail": "",
+      "comment": "Popular casino card game where players try to beat the dealer by getting closer to 21 without exceeding it",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "casino_games",
+      "language": "en",
+      "properties": {
+        "players": "1-7 players plus dealer",
+        "equipment": "52-card deck(s), chips, table",
+        "house_edge": "0.5% - 2% depending on rules",
+        "skill_level": "Medium",
+        "origin": "French casinos around 1700",
+        "aliases": ["Twenty-One", "21", "Pontoon"]
+      },
+      "external_links": [
+        {
+          "title": "Blackjack - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Blackjack",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "poker_001",
+      "uri": "http://dbpedia.org/resource/Poker",
+      "label": "Poker",
+      "abstract": "Poker is a family of comparing card games in which players wager over which hand is best according to that specific game's rules.",
+      "description": "Poker is a family of card games that combines gambling, strategy, and skill. All poker variants involve betting as an intrinsic part of play, and determine the winner of each hand according to the combinations of players' cards, at least some of which remain hidden until the end of the hand.",
+      "thumbnail": "",
+      "comment": "Family of card games involving betting and strategy",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "card_games",
+      "language": "en",
+      "properties": {
+        "players": "2-10 players typically",
+        "equipment": "52-card deck, chips",
+        "house_edge": "Varies by variant",
+        "skill_level": "High",
+        "origin": "United States, 19th century",
+        "variants": ["Texas Hold'em", "Omaha", "Seven Card Stud", "Five Card Draw"]
+      },
+      "external_links": [
+        {
+          "title": "Poker - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Poker",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "roulette_001",
+      "uri": "http://dbpedia.org/resource/Roulette",
+      "label": "Roulette",
+      "abstract": "Roulette is a casino game named after the French word meaning little wheel. In the game, players choose to place bets on either a single number, various groupings of numbers, or colors.",
+      "description": "Roulette is one of the oldest and most popular casino games. The game consists of a spinning wheel with numbered pockets and a small ball. Players bet on where they think the ball will land when the wheel stops spinning.",
+      "thumbnail": "",
+      "comment": "Classic casino game with a spinning wheel and betting on numbers or colors",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "table_games",
+      "language": "en",
+      "properties": {
+        "players": "Up to 8 players",
+        "equipment": "Roulette wheel, ball, betting table, chips",
+        "house_edge": "2.7% (European), 5.26% (American)",
+        "skill_level": "Low",
+        "origin": "France, 18th century",
+        "variants": ["European Roulette", "American Roulette", "French Roulette"]
+      },
+      "external_links": [
+        {
+          "title": "Roulette - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Roulette",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "baccarat_001",
+      "uri": "http://dbpedia.org/resource/Baccarat",
+      "label": "Baccarat",
+      "abstract": "Baccarat is a card game played at casinos. It is a comparing card game played between two hands, the player and the banker.",
+      "description": "Baccarat is a card game of chance played between a player and a banker. Three possible outcomes exist: player wins, banker wins, or tie. The game is known for its simplicity and low house edge on main bets.",
+      "thumbnail": "",
+      "comment": "Elegant card game popular among high rollers",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "card_games",
+      "language": "en",
+      "properties": {
+        "players": "Up to 14 players",
+        "equipment": "6-8 decks of cards, betting table",
+        "house_edge": "1.06% (banker), 1.24% (player)",
+        "skill_level": "Low",
+        "origin": "Italy, 15th century",
+        "variants": ["Punto Banco", "Chemin de Fer", "Baccarat Banque"]
+      },
+      "external_links": [
+        {
+          "title": "Baccarat - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Baccarat_(card_game)",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "craps_001",
+      "uri": "http://dbpedia.org/resource/Craps",
+      "label": "Craps",
+      "abstract": "Craps is a dice game in which players make wagers on the outcome of the roll, or a series of rolls, of a pair of dice.",
+      "description": "Craps is an exciting casino game played with two dice. Players bet on the outcomes of dice rolls, with numerous betting options available. The game is known for its social atmosphere and complex betting structure.",
+      "thumbnail": "",
+      "comment": "Fast-paced dice game with multiple betting options",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "table_games",
+      "language": "en",
+      "properties": {
+        "players": "Up to 20 players",
+        "equipment": "Two dice, craps table, chips",
+        "house_edge": "0.6% - 16% depending on bet",
+        "skill_level": "Medium",
+        "origin": "Evolved from Hazard, 12th century",
+        "betting_options": ["Pass Line", "Don't Pass", "Come", "Don't Come", "Field"]
+      },
+      "external_links": [
+        {
+          "title": "Craps - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Craps",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "slot_machine_001",
+      "uri": "http://dbpedia.org/resource/Slot_machine",
+      "label": "Slot Machine",
+      "abstract": "A slot machine is a casino gambling machine with three or more reels which spin when a button is pushed.",
+      "description": "Slot machines are the most popular form of casino gambling. Modern slot machines are computerized and use random number generators to determine outcomes. They feature various themes, bonus rounds, and progressive jackpots.",
+      "thumbnail": "",
+      "comment": "Electronic gambling machine with spinning reels and various payout combinations",
+      "type": "http://dbpedia.org/ontology/Machine",
+      "category": "slot_machines",
+      "language": "en",
+      "properties": {
+        "players": "1 player per machine",
+        "equipment": "Electronic slot machine, coins/credits",
+        "house_edge": "2% - 15% depending on machine",
+        "skill_level": "None",
+        "origin": "San Francisco, 1894",
+        "types": ["Classic Slots", "Video Slots", "Progressive Slots", "Bonus Slots"]
+      },
+      "external_links": [
+        {
+          "title": "Slot machine - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Slot_machine",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "texas_holdem_001",
+      "uri": "http://dbpedia.org/resource/Texas_hold_'em",
+      "label": "Texas Hold'em",
+      "abstract": "Texas Hold'em is a variation of the card game of poker. Two cards are dealt face down to each player, and then five community cards are placed face-up by the dealer.",
+      "description": "Texas Hold'em is the most popular variant of poker. Each player receives two private cards and shares five community cards. Players make the best possible five-card hand using any combination of their private cards and the community cards.",
+      "thumbnail": "",
+      "comment": "Most popular poker variant with community cards",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "card_games",
+      "language": "en",
+      "properties": {
+        "players": "2-10 players",
+        "equipment": "52-card deck, chips, dealer button",
+        "house_edge": "N/A (player vs player)",
+        "skill_level": "High",
+        "origin": "Texas, early 1900s",
+        "betting_rounds": ["Pre-flop", "Flop", "Turn", "River"]
+      },
+      "external_links": [
+        {
+          "title": "Texas hold 'em - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Texas_hold_'em",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "keno_001",
+      "uri": "http://dbpedia.org/resource/Keno",
+      "label": "Keno",
+      "abstract": "Keno is a lottery-like gambling game often played at modern casinos, and also offered as a game by some state lotteries.",
+      "description": "Keno is a lottery-style game where players select numbers from 1 to 80. The casino then draws 20 numbers randomly. Players win based on how many of their selected numbers match the drawn numbers.",
+      "thumbnail": "",
+      "comment": "Lottery-style casino game with number selection",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "casino_games",
+      "language": "en",
+      "properties": {
+        "players": "Multiple players",
+        "equipment": "Keno balls, number board",
+        "house_edge": "25% - 35%",
+        "skill_level": "None",
+        "origin": "Ancient China",
+        "number_range": "1-80"
+      },
+      "external_links": [
+        {
+          "title": "Keno - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Keno",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "pai_gow_001",
+      "uri": "http://dbpedia.org/resource/Pai_gow_poker",
+      "label": "Pai Gow Poker",
+      "abstract": "Pai Gow Poker is a casino table game and is played with a standard 52-card deck plus one joker.",
+      "description": "Pai Gow Poker combines elements of the ancient Chinese game Pai Gow and American poker. Players create two poker hands from seven cards: a five-card high hand and a two-card low hand.",
+      "thumbnail": "",
+      "comment": "Poker variant inspired by Chinese Pai Gow game",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "card_games",
+      "language": "en",
+      "properties": {
+        "players": "Up to 6 players plus dealer",
+        "equipment": "52-card deck plus joker, chips",
+        "house_edge": "2.5%",
+        "skill_level": "Medium",
+        "origin": "1985, California",
+        "hands": ["Five-card high hand", "Two-card low hand"]
+      },
+      "external_links": [
+        {
+          "title": "Pai gow poker - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Pai_gow_poker",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "sic_bo_001",
+      "uri": "http://dbpedia.org/resource/Sic_bo",
+      "label": "Sic Bo",
+      "abstract": "Sic bo is an unequal game of chance of ancient Chinese origin played with three dice.",
+      "description": "Sic Bo is a traditional Chinese dice game played with three dice. Players bet on the outcomes of the dice rolls, with various betting options available including specific numbers, combinations, and totals.",
+      "thumbnail": "",
+      "comment": "Ancient Chinese dice game with multiple betting options",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "table_games",
+      "language": "en",
+      "properties": {
+        "players": "Multiple players",
+        "equipment": "Three dice, betting table",
+        "house_edge": "2.8% - 33% depending on bet",
+        "skill_level": "Low",
+        "origin": "Ancient China",
+        "dice_count": "3"
+      },
+      "external_links": [
+        {
+          "title": "Sic bo - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Sic_bo",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "casino_001",
+      "uri": "http://dbpedia.org/resource/Casino",
+      "label": "Casino",
+      "abstract": "A casino is a facility for certain types of gambling. Casinos are often built near or combined with hotels, resorts, restaurants, retail shopping, cruise ships, and other tourist attractions.",
+      "description": "Casinos are establishments that house and accommodate certain types of gambling activities. The industry that deals in casinos is called the gaming industry. Casinos are most commonly built near or combined with hotels, restaurants, retail shopping, cruise ships or other tourist attractions.",
+      "thumbnail": "",
+      "comment": "Facility for gambling activities and entertainment",
+      "type": "http://dbpedia.org/ontology/Building",
+      "category": "gambling_concepts",
+      "language": "en",
+      "properties": {
+        "purpose": "Commercial gambling and entertainment",
+        "regulation": "Heavily regulated industry",
+        "revenue_source": "House edge on games",
+        "additional_services": ["Hotels", "Restaurants", "Shows", "Shopping"],
+        "origin": "Italy, 17th century"
+      },
+      "external_links": [
+        {
+          "title": "Casino - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Casino",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "house_edge_001",
+      "uri": "http://dbpedia.org/resource/House_edge",
+      "label": "House Edge",
+      "abstract": "The house edge is the mathematical advantage that the gambling game, and therefore the commercial gambling venue, has over the player while the game is played over time.",
+      "description": "The house edge is a term used to describe the mathematical advantage that the gambling game gives the casino over the players over time. It's usually expressed as a percentage of each bet that the casino expects to keep over the long run.",
+      "thumbnail": "",
+      "comment": "Mathematical advantage that casinos have over players",
+      "type": "http://dbpedia.org/ontology/Concept",
+      "category": "gambling_concepts",
+      "language": "en",
+      "properties": {
+        "expression": "Percentage of each bet",
+        "purpose": "Casino profitability",
+        "variation": "Differs by game and rules",
+        "impact": "Long-term player losses"
+      },
+      "external_links": [
+        {
+          "title": "House edge - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/House_edge",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "monte_carlo_001",
+      "uri": "http://dbpedia.org/resource/Monte_Carlo_Casino",
+      "label": "Monte Carlo Casino",
+      "abstract": "The Monte Carlo Casino is a gambling and entertainment complex located in Monte Carlo, Monaco.",
+      "description": "The Monte Carlo Casino is one of the most famous casinos in the world, located in the principality of Monaco. It has been featured in numerous films and is known for its luxurious atmosphere and high-stakes gambling.",
+      "thumbnail": "",
+      "comment": "Famous luxury casino in Monaco",
+      "type": "http://dbpedia.org/ontology/Building",
+      "category": "gambling_concepts",
+      "language": "en",
+      "properties": {
+        "location": "Monte Carlo, Monaco",
+        "opened": "1863",
+        "architect": "Charles Garnier",
+        "notable_features": ["Belle Époque architecture", "High-stakes gambling", "Exclusive clientele"]
+      },
+      "external_links": [
+        {
+          "title": "Monte Carlo Casino - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Monte_Carlo_Casino",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "las_vegas_001",
+      "uri": "http://dbpedia.org/resource/Las_Vegas",
+      "label": "Las Vegas",
+      "abstract": "Las Vegas is the most populous city in Nevada and the county seat of Clark County. Las Vegas is an internationally renowned major resort city, known primarily for its gambling, shopping, fine dining, entertainment, and nightlife.",
+      "description": "Las Vegas is the gambling capital of the United States and one of the world's most famous casino destinations. The city is home to numerous large casinos and is known for its vibrant nightlife and entertainment options.",
+      "thumbnail": "",
+      "comment": "World-famous gambling and entertainment destination",
+      "type": "http://dbpedia.org/ontology/City",
+      "category": "gambling_concepts",
+      "language": "en",
+      "properties": {
+        "nickname": "Sin City, Entertainment Capital of the World",
+        "location": "Nevada, United States",
+        "famous_for": ["Casinos", "Shows", "Nightlife", "Wedding chapels"],
+        "major_casinos": ["Bellagio", "Caesars Palace", "MGM Grand", "Venetian"]
+      },
+      "external_links": [
+        {
+          "title": "Las Vegas - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Las_Vegas",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "video_poker_001",
+      "uri": "http://dbpedia.org/resource/Video_poker",
+      "label": "Video Poker",
+      "abstract": "Video poker is a casino game based on five-card draw poker. It is played on a computerized console similar in size to a slot machine.",
+      "description": "Video poker is an electronic version of five-card draw poker played on a computer terminal. Players are dealt five cards and can choose which to keep and which to discard. The goal is to make the best possible poker hand.",
+      "thumbnail": "",
+      "comment": "Electronic poker game played on computer terminals",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "slot_machines",
+      "language": "en",
+      "properties": {
+        "players": "1 player per machine",
+        "equipment": "Video poker machine, credits",
+        "house_edge": "0.5% - 5% depending on variant and strategy",
+        "skill_level": "Medium",
+        "origin": "1970s",
+        "variants": ["Jacks or Better", "Deuces Wild", "Jokers Wild"]
+      },
+      "external_links": [
+        {
+          "title": "Video poker - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Video_poker",
+          "type": "wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "three_card_poker_001",
+      "uri": "http://dbpedia.org/resource/Three_card_poker",
+      "label": "Three Card Poker",
+      "abstract": "Three card poker is a casino table game. It was designed in 1994 by Derek Webb.",
+      "description": "Three Card Poker is a casino table game that combines elements of poker and casino table games. Players receive three cards and compete against the dealer's hand, with two betting options: Ante/Play and Pair Plus.",
+      "thumbnail": "",
+      "comment": "Simple poker variant with three cards per player",
+      "type": "http://dbpedia.org/ontology/Game",
+      "category": "card_games",
+      "language": "en",
+      "properties": {
+        "players": "Up to 7 players plus dealer",
+        "equipment": "52-card deck, betting table",
+        "house_edge": "2.01% (Ante), 2.32% (Pair Plus)",
+        "skill_level": "Low",
+        "inventor": "Derek Webb",
+        "year_invented": "1994"
+      },
+      "external_links": [
+        {
+          "title": "Three card poker - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Three_card_poker",
+          "type": "wikipedia"
+        }
+      ]
+    }
+  ]
+}

@@ -1,23 +1,102 @@
 extends layout
 
 block content
-  .row.g-4
-    // Main Content - Resultados
-    .col-12
-      .card
-        .card-header.d-flex.justify-content-between.align-items-center
-          div
-            i.fas.fa-th-list.me-2
-            | RESULTADOS
-          span#resultsCount.badge.bg-primary 0
-        .card-body
-          #resultsContainer
-            .alert.alert-info.mb-0(role='alert')
-              .d-flex.align-items-center
-                i.fas.fa-info-circle.fa-2x.me-3
-                div
-                  strong.d-block.mb-1 Bienvenido al Buscador Semántico de Casinos
-                  span Utiliza el buscador arriba para comenzar tu búsqueda
+  // Contenedor principal de resultados tipo Google
+  .search-results-container
+    // Información de búsqueda y estadísticas
+    #searchInfo.search-info.d-none
+      .container-fluid
+        .row
+          .col-md-8
+            .search-stats
+              span#searchStatsText Aproximadamente 0 resultados
+          .col-md-4.text-end
+            .search-filters
+              .dropdown
+                button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button', data-bs-toggle='dropdown')
+                  i.fas.fa-filter.me-1
+                  | Filtros
+                ul.dropdown-menu
+                  li
+                    a.dropdown-item(href='#', onclick='filterResults("local"); return false;')
+                      i.fas.fa-home.me-2
+                      | Solo Ontología Local
+                  li
+                    a.dropdown-item(href='#', onclick='filterResults("dbpedia"); return false;')
+                      i.fas.fa-globe.me-2
+                      | Solo DBpedia
+                  li
+                    a.dropdown-item(href='#', onclick='filterResults("all"); return false;')
+                      i.fas.fa-list.me-2
+                      | Todos los resultados
+                  li
+                    hr.dropdown-divider
+                  li
+                    a.dropdown-item(href='#', onclick='showStats(); return false;')
+                      i.fas.fa-chart-bar.me-2
+                      | Ver Estadísticas
+
+    // Container principal de resultados
+    #resultsContainer.results-main-container
+      // Estado inicial - Bienvenida
+      .welcome-state.text-center.py-5
+        .welcome-icon.mb-4
+          i.fas.fa-dice.fa-4x.text-primary
+        h2.h3.mb-3 Buscador Semántico de Juegos de Casino
+        p.lead.text-muted.mb-4 Explora nuestra base de conocimiento especializada
+        .welcome-features.row.g-4
+          .col-md-4
+            .feature-card.text-center.p-3
+              i.fas.fa-search.fa-2x.text-info.mb-2
+              h5 Búsqueda Inteligente
+              p.small.text-muted Procesamiento de lenguaje natural
+          .col-md-4
+            .feature-card.text-center.p-3
+              i.fas.fa-database.fa-2x.text-success.mb-2
+              h5 Ontología Local
+              p.small.text-muted Base de conocimiento especializada
+          .col-md-4
+            .feature-card.text-center.p-3
+              i.fas.fa-globe.fa-2x.text-warning.mb-2
+              h5 DBpedia Integrado
+              p.small.text-muted Conocimiento global offline
+
+
+    // Container de resultados Google-style
+    #googleResults.google-results-container.d-none
+      .container-fluid
+        .results-list
+
+    // Loader mejorado
+    #loadingContainer.loading-container.d-none.text-center.py-5
+      .spinner-container
+        .spinner-border.text-primary(role='status', style='width: 3rem; height: 3rem;')
+        h4.mt-3 Buscando...
+        p.text-muted Consultando ontología local y DBpedia
+        .progress.mt-3(style='width: 300px; margin: 0 auto;')
+          .progress-bar.progress-bar-striped.progress-bar-animated(role='progressbar', style='width: 100%')
+
+  // Modal para vista detallada de resultados (estilo Google)
+  #detailModal.modal.fade(tabindex='-1')
+    .modal-dialog.modal-lg.modal-dialog-centered.modal-dialog-scrollable
+      .modal-content
+        .modal-header.border-0.pb-0
+          .modal-title-container.w-100
+            h4.modal-title.mb-1
+              span#detailTitle Cargando...
+            .modal-subtitle
+              small.text-muted#detailSubtitle
+          button.btn-close(type='button', data-bs-dismiss='modal')
+        .modal-body.pt-2
+          #detailOverviewContent
+            .text-center.py-5
+              .spinner-border.text-primary(role='status')
+                span.visually-hidden Cargando...
+              p.mt-3.text-muted Cargando información...
+        .modal-footer.border-0
+          button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
+            i.fas.fa-times.me-1
+            | Cerrar
 
   // Modal para estadísticas
   #statsModal.modal.fade(tabindex='-1')
@@ -26,7 +105,7 @@ block content
         .modal-header
           h5.modal-title
             i.fas.fa-chart-pie.me-2
-            | ESTADÍSTICAS DE LA ONTOLOGÍA
+            | Estadísticas del Sistema
           button.btn-close(type='button', data-bs-dismiss='modal')
         .modal-body.p-4
           #statsContent
@@ -37,5 +116,68 @@ block content
         .modal-footer
           button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
             i.fas.fa-times.me-2
-            | CERRAR
+            | Cerrar
 
+  // Toast para notificaciones
+  .toast-container.position-fixed.bottom-0.end-0.p-3
+    #notificationToast.toast(role='alert', aria-live='assertive', aria-atomic='true')
+      .toast-header
+        i.fas.fa-bell.text-primary.me-2
+        strong.me-auto Sistema
+        button.btn-close(type='button', data-bs-dismiss='toast')
+      .toast-body
+        span#toastMessage Mensaje del sistema
+
+  // Templates para JavaScript
+  script(type='text/template', id='googleResultTemplate')
+    | <div class="google-result-item" data-id="{{id}}" data-type="{{type}}" data-uri="{{uri}}">
+    |   <div class="result-header">
+    |     <div class="result-url">
+    |       <i class="fas fa-{{sourceIcon}} me-1"></i>
+    |       <span class="source-badge badge badge-{{sourceType}}">{{displaySource}}</span>
+    |     </div>
+    |     <h3 class="result-title">
+    |       <a href="#" onclick="showResultDetail('{{id}}', '{{type}}', '{{uri}}'); return false;">
+    |         {{title}}
+    |       </a>
+    |     </h3>
+    |   </div>
+    |   <div class="result-content">
+    |     <p class="result-snippet">{{snippet}}</p>
+    |     {{#if hasImage}}
+    |     <div class="result-image">
+    |       <img src="{{imageUrl}}" alt="{{title}}" class="img-thumbnail">
+    |     </div>
+    |     {{/if}}
+    |   </div>
+    |   <div class="result-meta">
+    |     <span class="relevance-score">
+    |       <i class="fas fa-star me-1"></i>
+    |       Relevancia: {{relevance}}
+    |     </span>
+    |     {{#if category}}
+    |     <span class="category-tag">
+    |       <i class="fas fa-tag me-1"></i>
+    |       {{category}}
+    |     </span>
+    |     {{/if}}
+    |   </div>
+    | </div>
+
+  script(type='text/template', id='emptyResultsTemplate')
+    | <div class="empty-results text-center py-5">
+    |   <div class="empty-icon mb-4">
+    |     <i class="fas fa-search fa-3x text-muted"></i>
+    |   </div>
+    |   <h3 class="h4 mb-3">No se encontraron resultados</h3>
+    |   <p class="text-muted mb-4">Tu búsqueda "{{query}}" no coincide con ningún documento.</p>
+    |   <div class="suggestions">
+    |     <p class="fw-bold mb-2">Sugerencias:</p>
+    |     <ul class="list-unstyled">
+    |       <li><i class="fas fa-check text-success me-2"></i>Verifica la ortografía</li>
+    |       <li><i class="fas fa-check text-success me-2"></i>Prueba con palabras clave diferentes</li>
+    |       <li><i class="fas fa-check text-success me-2"></i>Usa términos más generales</li>
+    |       <li><i class="fas fa-check text-success me-2"></i>Activa la búsqueda en DBpedia</li>
+    |     </ul>
+    |   </div>
+    | </div>
