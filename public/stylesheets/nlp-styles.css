@@ -1,0 +1,390 @@
+/* ========================================
+   NLP Answer Box Styles
+   ======================================== */
+
+.nlp-answer-box {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border: 2px solid var(--casino-gold);
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+    overflow: hidden;
+    animation: slideInDown 0.5s ease-out;
+}
+
+.nlp-answer-header {
+    background: linear-gradient(90deg, var(--casino-gold) 0%, rgba(212, 175, 55, 0.8) 100%);
+    color: var(--casino-dark);
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nlp-answer-header i {
+    font-size: 1.2rem;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.nlp-badge {
+    margin-left: auto;
+    background: var(--casino-dark);
+    color: var(--casino-gold);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nlp-answer-content {
+    padding: 1.5rem;
+    color: var(--casino-white);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.nlp-answer-content strong {
+    color: var(--casino-gold);
+    font-weight: 600;
+}
+
+.nlp-answer-content p {
+    margin: 0.5rem 0;
+}
+
+.nlp-answer-footer {
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.nlp-answer-footer small {
+    color: var(--casino-gray);
+    font-size: 0.85rem;
+}
+
+/* Animación para el cerebro */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+/* Animación de entrada */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   Results Container Width Fix
+   ======================================== */
+
+.results-list {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 2rem 5% !important;
+}
+
+@media (min-width: 1400px) {
+    .results-list {
+        padding: 2rem 10% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .results-list {
+        padding: 1rem 3% !important;
+    }
+}
+
+/* ========================================
+   Description Text Visibility Fix
+   ======================================== */
+
+.description-text {
+    background: rgba(212, 175, 55, 0.05) !important;
+    color: var(--casino-white) !important;
+    border: 1px solid rgba(212, 175, 55, 0.2) !important;
+    padding: 1.5rem !important;
+    border-radius: 8px !important;
+    line-height: 1.8 !important;
+    font-size: 1rem !important;
+}
+
+.description-text p {
+    color: var(--casino-white) !important;
+    margin-bottom: 1rem;
+}
+
+/* Result snippet visibility */
+.result-snippet {
+    color: var(--casino-white) !important;
+    opacity: 0.95 !important;
+}
+
+/* ========================================
+   Modal Improvements
+   ======================================== */
+
+.detail-overview {
+    color: var(--casino-white) !important;
+}
+
+.detail-overview h5 {
+    color: var(--casino-gold) !important;
+    margin-top: 1.5rem !important;
+    font-weight: 600;
+}
+
+.detail-category .badge {
+    background: rgba(212, 175, 55, 0.2) !important;
+    color: var(--casino-gold) !important;
+    border: 1px solid var(--casino-gold) !important;
+}
+
+/* ========================================
+   NLP Features Highlights
+   ======================================== */
+
+.nlp-feature-indicator {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--casino-gold) 0%, var(--casino-red) 100%);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   Probability Display Styles
+   ======================================== */
+
+.probability-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(14, 98, 69, 0.2);
+    border: 1px solid var(--casino-green);
+    color: var(--casino-green);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.probability-stat i {
+    color: var(--casino-gold);
+}
+
+.rtp-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(212, 175, 55, 0.2);
+    border: 1px solid var(--casino-gold);
+    color: var(--casino-gold);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.house-edge-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(196, 30, 58, 0.2);
+    border: 1px solid var(--casino-red);
+    color: var(--casino-red);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+/* ========================================
+   NLP Query Examples (for UI)
+   ======================================== */
+
+.nlp-example-queries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.nlp-example-query {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--casino-white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nlp-example-query:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--casino-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.nlp-example-query i {
+    color: var(--casino-gold);
+    margin-right: 0.3rem;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+
+@media (max-width: 768px) {
+    .nlp-answer-box {
+        margin-bottom: 1.5rem;
+    }
+
+    .nlp-answer-header {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .nlp-answer-content {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .nlp-badge {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .probability-stat,
+    .rtp-stat,
+    .house-edge-stat {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* ========================================
+   Loading State for NLP
+   ======================================== */
+
+.nlp-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.nlp-loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-top-color: var(--casino-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.nlp-loading-text {
+    color: var(--casino-white);
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   Enhanced Text Visibility
+   ======================================== */
+
+.google-result-item {
+    color: var(--casino-white) !important;
+}
+
+.result-title a {
+    color: var(--casino-gold) !important;
+}
+
+.result-snippet {
+    color: rgba(248, 249, 250, 0.95) !important;
+}
+
+.result-meta {
+    color: var(--casino-gray) !important;
+}
+
+/* Detail modal text */
+.modal-body {
+    color: var(--casino-white) !important;
+}
+
+.modal-body p,
+.modal-body div {
+    color: var(--casino-white) !important;
+}
+
+/* ========================================
+   NLP Intent Badges
+   ======================================== */
+
+.intent-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.intent-probability {
+    background: rgba(14, 98, 69, 0.3);
+    color: var(--casino-green);
+    border: 1px solid var(--casino-green);
+}
+
+.intent-rules {
+    background: rgba(212, 175, 55, 0.3);
+    color: var(--casino-gold);
+    border: 1px solid var(--casino-gold);
+}
+
+.intent-strategy {
+    background: rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    border: 1px solid #818cf8;
+}
+
+.intent-comparison {
+    background: rgba(196, 30, 58, 0.3);
+    color: var(--casino-red);
+    border: 1px solid var(--casino-red);
+}
